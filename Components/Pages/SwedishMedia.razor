@@ -1,0 +1,74 @@
+﻿@page "/swedish_media"
+
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<h3>Swedish Media</h3>
+
+<div class="container">
+
+    <div class="link-list mt-3">
+        <h4>Links</h4>
+        @foreach (var group in linkGroups)
+        {
+            <div class="link-group mt-3">
+                <h5>@group.Header</h5>
+                <ul class="list-group">
+                    @foreach (var link in group.Links)
+                    {
+                        <li class="list-group-item">
+                            <a href="@link.Url" target="_blank">@link.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+
+    <button class="btn btn-primary mt-3" @onclick="GoToTwitter">Twitter</button>
+</div>
+
+@code {
+    private List<LinkGroup> linkGroups = new List<LinkGroup>
+    {
+        new LinkGroup
+        {
+            Header = "Make money from home",
+            Links = new List<LinkItem>
+            {
+                new LinkItem { Name = "Freecash, best website to make money from home!", Url = "https://freecash.com/r/empowered" },
+                new LinkItem { Name = "Rent out your cs skins to earn a living 100% passive", Url = "https://lootbear.com/r/Gooffball" }
+            }
+        },
+        new LinkGroup
+        {
+            Header = "Shop",
+            Links = new List<LinkItem>
+            {
+                new LinkItem { Name = "EpicPulse", Url = "http://tee.pub/lic/epicpulse" }
+            }
+        }
+        // Lägg till fler grupper och länkar här
+    };
+
+    private void GoToTwitter()
+    {
+        NavigationManager.NavigateTo("https://x.com/ShattapT28261", true);
+    }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    public class LinkItem
+    {
+        public string Name { get; set; }
+        public string Url { get; set; }
+    }
+
+    public class LinkGroup
+    {
+        public string Header { get; set; }
+        public List<LinkItem> Links { get; set; }
+    }
+}
