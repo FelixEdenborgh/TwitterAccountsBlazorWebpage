@@ -9,11 +9,29 @@
     <link rel="stylesheet" href="app.css" />
     <link rel="stylesheet" href="TwitterAccountsBlazorWebpage.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- AdSense-kod -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6884239427315954"
+            crossorigin="anonymous"></script>
+
     <HeadOutlet />
 </head>
 
 <body>
     <Routes />
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            <a href="" class="reload">Reload</a>
+            <a class="dismiss">🗙</a>
+        </environment>
+        <environment include="Development">
+            <a href="" class="reload">Reload</a>
+            <a class="dismiss">🗙</a>
+        </environment>
+    </div>
     <script src="_framework/blazor.web.js"></script>
 </body>
 
