@@ -176,6 +176,7 @@ h1:focus {
     background-color: #f4f4f4;
     padding: 10px;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: width 0.2s; /* Smooth transition for width change */
 }
 
 .fixed-footer {
@@ -192,7 +193,7 @@ h1:focus {
 }
 
 /* Media queries for responsive design */
-@media (min-width: 600px) {
+@media (min-width: 1200px) {
     .page {
         flex-direction: row; /* Side-by-side layout for larger screens */
     }
@@ -202,13 +203,54 @@ h1:focus {
     }
 
     .right-panel {
-        width: 200px;
+        width: 200px; /* Maintain width on larger screens */
     }
 }
 
-@media (max-width: 599px) {
-    .sidebar, .right-panel {
-        width: 100%;
+@media (max-width: 1199px) {
+    .right-panel {
+        width: 150px; /* Adjust width for medium screens */
+    }
+}
+
+@media (max-width: 900px) {
+    .right-panel {
+        width: 100px; /* Adjust width for smaller screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .right-panel {
+        width: 100%; /* Full width on very small screens */
         padding: 10px 0;
+    }
+
+    .sidebar {
+        width: 100%; /* Full width for sidebar on very small screens */
+    }
+
+    .navbar-toggler {
+        display: block;
+        cursor: pointer;
+    }
+
+    .navbar-collapse {
+        display: none;
+    }
+
+        .navbar-collapse.show {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            text-align: center;
+        }
+
+    .navbar-nav {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-item {
+        margin: 5px 0;
     }
 }
