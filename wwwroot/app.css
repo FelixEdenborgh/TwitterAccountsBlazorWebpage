@@ -83,46 +83,56 @@ h1:focus {
     flex-wrap: wrap;
     justify-content: center; /* Center content on smaller screens */
     gap: 10px; /* Add some space between items */
+    margin: 0 auto; /* Center the grid */
+    padding: 10px; /* Add some padding */
+    max-width: 1200px; /* Limit the maximum width */
 }
 
 .product-card {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
-    width: 100%; /* Make full width on smaller screens */
-    max-width: 200px; /* Limit max width */
+    width: calc(33.333% - 20px); /* Three columns on large screens */
     text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: #fff;
+    transition: transform 0.2s; /* Smooth transform on hover */
 }
 
     .product-card img {
         max-width: 100%;
         height: auto;
+        border-radius: 5px 5px 0 0;
     }
 
-/* Media query for larger screens */
-@media (min-width: 600px) {
+    .product-card h4 {
+        margin: 10px 0;
+        font-size: 1.2rem;
+    }
+
+    .product-card a {
+        display: block;
+        margin-top: 10px;
+        color: #006bb7;
+        text-decoration: none;
+    }
+
+    .product-card:hover {
+        transform: scale(1.05); /* Slightly enlarge on hover */
+    }
+
+/* Media query for medium screens */
+@media (max-width: 900px) {
     .product-card {
         width: calc(50% - 20px); /* Two columns on medium screens */
     }
 }
 
-@media (min-width: 900px) {
-    .product-card {
-        width: calc(33.333% - 20px); /* Three columns on large screens */
-    }
-}
-
-/* Lägg till ytterligare responsivitet */
-@media (max-width: 599px) {
+/* Media query for small screens */
+@media (max-width: 600px) {
     .product-card {
         width: calc(100% - 20px); /* Full width on small screens */
-    }
-}
-
-@media (max-width: 400px) {
-    .product-card {
-        margin: 5px; /* Reduce margins on very small screens */
-        padding: 5px; /* Reduce padding on very small screens */
     }
 }
 
