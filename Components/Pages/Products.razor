@@ -1,0 +1,52 @@
+﻿@page "/"
+@using TwitterAccountsBlazorWebpage.Models
+@inject RssFeedService RssFeedService
+
+<h3>Our Products</h3>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="product-grid">
+        @foreach (var product in products)
+        {
+            <div class="product-card">
+                <img src="@product.ImageUrl" alt="@product.Title" />
+                <h4>@product.Title</h4>
+                <a href="@product.Link" target="_blank">View on TeePublic</a>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private IEnumerable<Product> products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await RssFeedService.GetProductsAsync();
+    }
+}
+
+<style>
+    .product-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .product-card {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px;
+        width: 200px;
+        text-align: center;
+    }
+
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+        }
+</style>
