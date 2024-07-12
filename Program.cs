@@ -7,6 +7,15 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddHttpClient<RssFeedService>();
 
+// Lägg till Application Insights
+builder.Services.AddApplicationInsightsTelemetry();
+
+// Lägg till Response Compression
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,6 +29,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseResponseCompression(); // Lägg till denna rad
+
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
