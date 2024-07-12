@@ -81,18 +81,18 @@ h1:focus {
 .product-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Center content on smaller screens */
+    justify-content: space-around; /* Use space-around to better space items */
     gap: 10px; /* Add some space between items */
     margin: 0 auto; /* Center the grid */
     padding: 10px; /* Add some padding */
-    max-width: 1200px; /* Limit the maximum width */
+    max-width: 1400px; /* Adjust the maximum width as needed */
 }
 
 .product-card {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
-    width: calc(33.333% - 20px); /* Three columns on large screens */
+    width: calc(20% - 20px); /* Five columns on large screens */
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -108,7 +108,7 @@ h1:focus {
 
     .product-card h4 {
         margin: 10px 0;
-        font-size: 1.2rem;
+        font-size: 1rem; /* Adjust font size if needed */
     }
 
     .product-card a {
@@ -123,16 +123,28 @@ h1:focus {
     }
 
 /* Media query for medium screens */
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
     .product-card {
-        width: calc(50% - 20px); /* Two columns on medium screens */
+        width: calc(25% - 20px); /* Four columns on medium screens */
     }
 }
 
 /* Media query for small screens */
+@media (max-width: 900px) {
+    .product-card {
+        width: calc(33.333% - 20px); /* Three columns on small screens */
+    }
+}
+
 @media (max-width: 600px) {
     .product-card {
-        width: calc(100% - 20px); /* Full width on small screens */
+        width: calc(50% - 20px); /* Two columns on smaller screens */
+    }
+}
+
+@media (max-width: 400px) {
+    .product-card {
+        width: calc(100% - 20px); /* Full width on very small screens */
     }
 }
 
