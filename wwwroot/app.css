@@ -31,7 +31,7 @@ html, body {
 }
 
 /* Specifik bakgrundsbild för Cs2-sidan */
-.cs2-background {
+.cs2cases-background {
     background-image: url('/images/cs2.jpg'); /* Ändra till sökvägen till din bakgrundsbild */
     background-size: cover;
     background-position: center;
