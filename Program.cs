@@ -1,4 +1,6 @@
+using Autofac.Core;
 using TwitterAccountsBlazorWebpage.Components;
+using TwitterAccountsBlazorWebpage.Rss_Feed_Import;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddHttpClient<RssFeedService>();
+builder.Services.AddHttpClient<TwitterRSSFeedService>();
 
 // Lägg till Application Insights
 builder.Services.AddApplicationInsightsTelemetry();

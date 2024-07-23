@@ -4,6 +4,20 @@ html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-image: url('path/to/your/background-image.jpg'); /* Ändra till sökvägen till din bakgrundsbild */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Specifik bakgrundsbild för Swedish Media-sidan */
+.swedish-media-background {
+    background-image: url('/images/sweden.jpg'); /* Ändra till sökvägen till din bakgrundsbild */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 20px; /* Lägg till lite padding för att innehållet inte ska ligga direkt mot kanten */
+    min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
 }
 
 /* Länkar och knappar */
@@ -253,4 +267,59 @@ h1:focus {
     .nav-item {
         margin: 5px 0;
     }
+}
+
+/* Anpassade stilar för länkgrupper och bakgrund */
+.link-groups {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.link-group-box {
+    flex: 1 1 30%;
+    box-sizing: border-box;
+    margin: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 15px;
+    min-width: 250px; /* Lägger till en minimibredd */
+    max-width: 30%; /* Begränsar bredden till 30% */
+}
+
+@media (max-width: 768px) {
+    .link-group-box {
+        flex: 1 1 100%; /* Full bredd på mindre skärmar */
+    }
+}
+
+.link-list {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.tweet-list {
+    margin-top: 20px;
+}
+
+.tweet {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.tweet-content {
+    margin-bottom: 10px;
+}
+
+.tweet-media {
+    margin-top: 10px;
+}
+
+iframe, video {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 560px;
 }

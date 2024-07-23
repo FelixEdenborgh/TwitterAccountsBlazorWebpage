@@ -1,0 +1,76 @@
+﻿@page "/swedishmedia-twitter-feed"
+@using System.ServiceModel.Syndication
+@using TwitterAccountsBlazorWebpage.Rss_Feed_Import
+@inject TwitterRSSFeedService FeedService
+@inject ILogger<SwedishMedia_TwitterFeed> Logger
+
+<h4>Latest Tweets</h4>
+
+<div class="tweet-list">
+    @if (tweets == null)
+    {
+        <p>Loading tweets...</p>
+    }
+    else if (!tweets.Any())
+    {
+        <p>No tweets available</p>
+    }
+    else
+    {
+        @foreach (var tweet in tweets)
+        {
+            <div class="tweet">
+                <div class="tweet-content">
+                    <div>@((MarkupString)tweet.Summary.Text)</div> <!-- Rendera tweet-innehållet som HTML -->
+                    <small>@tweet.PublishDate.ToString("g")</small>
+                    @if (links.ContainsKey(tweet.Id) && links[tweet.Id].Any())
+                    {
+                        <div class="tweet-media">
+                            @foreach (var link in links[tweet.Id])
+                            {
+                                @if (link.Contains("youtube.com"))
+                                {
+                                    <iframe width="560" height="315" src="@link" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                }
+                                else if (link.EndsWith(".mp4") || link.EndsWith(".webm") || link.EndsWith(".ogg"))
+                                {
+                                    <video controls width="100%">
+                                        <source src="@link" type="video/mp4" />
+                                    </video>
+                                }
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    private List<SyndicationItem> tweets;
+    private Dictionary<string, List<string>> links = new Dictionary<string, List<string>>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Initializing SwedishMedia_TwitterFeed component");
+        var feedUrl = "https://rss.app/feeds/VhpP8n4zPbzJYWVc.xml"; // Ersätt med ditt Twitter-handle
+        tweets = await FeedService.GetLatestTweetsAsync(feedUrl);
+
+        foreach (var tweet in tweets)
+        {
+            Logger.LogInformation("Processing tweet: {TweetTitle}", tweet.Summary.Text);
+            var extractedLinks = FeedService.ExtractLinks(tweet.Summary.Text);
+            if (extractedLinks.Any())
+            {
+                links[tweet.Id] = extractedLinks;
+                Logger.LogInformation("Extracted links: {Links}", string.Join(", ", extractedLinks));
+            }
+            else
+            {
+                links[tweet.Id] = new List<string>();
+                Logger.LogInformation("No links found in tweet: {TweetTitle}", tweet.Summary.Text);
+            }
+        }
+    }
+}
