@@ -6,26 +6,32 @@
 
 <h3>Global News</h3>
 
-<div class="container">
-
-    <div class="link-list mt-3">
-        <h4>Links</h4>
-        @foreach (var group in linkGroups)
-        {
-            <div class="link-group mt-3">
-                <h5>@group.Header</h5>
-                <ul class="list-group">
-                    @foreach (var link in group.Links)
+<div class="container globalnews-background">
+    <div class="row">
+        <div class="col-md-4">
+            <GlobalNews_TwitterFeed />
+        </div>
+        <div class="col-md-8">
+            <div class="link-list mt-3">
+                <div class="link-groups d-flex flex-wrap">
+                    @foreach (var group in linkGroups)
                     {
-                        <li class="list-group-item">
-                            <a href="@link.Url" target="_blank">@link.Name</a>
-                        </li>
+                        <div class="link-group-box mt-3 p-2 flex-grow-1">
+                            <h5>@group.Header</h5>
+                            <ul class="list-group">
+                                @foreach (var link in group.Links)
+                                {
+                                    <li class="list-group-item">
+                                        <a href="@link.Url" target="_blank">@link.Name</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
                     }
-                </ul>
+                </div>
             </div>
-        }
+        </div>
     </div>
-
     <button class="btn btn-primary mt-3" @onclick="GoToTwitter">Twitter</button>
 </div>
 
@@ -66,10 +72,8 @@
                 new LinkItem { Name = "Pawns: Rent out the data you don't use and make money on it", Url = "https://gopawns.eu/Gooffball" },
                 new LinkItem { Name = "Refunder: Instant 10$ when signing up + money back on every transaction", Url = "https://www.refunder.se/bjud-in/654dfae0e7007" },
                 new LinkItem { Name = "Rent out your money in form of weapons in cs2 'Online game' to earn passive income daily", Url = "https://lootbear.com/r/Gooffball" }
-
             }
         }
-        // Lägg till fler grupper och länkar här
     };
 
     private void GoToTwitter()

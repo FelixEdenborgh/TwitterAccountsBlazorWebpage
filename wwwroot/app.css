@@ -20,6 +20,36 @@ html, body {
     min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
 }
 
+/* Specifik bakgrundsbild för Global news-sidan */
+.globalnews-background {
+    background-image: url('/images/earth2.jpg'); /* Ändra till sökvägen till din bakgrundsbild */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 20px; /* Lägg till lite padding för att innehållet inte ska ligga direkt mot kanten */
+    min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
+}
+
+/* Specifik bakgrundsbild för Cs2-sidan */
+.cs2-background {
+    background-image: url('/images/cs2.jpg'); /* Ändra till sökvägen till din bakgrundsbild */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 20px; /* Lägg till lite padding för att innehållet inte ska ligga direkt mot kanten */
+    min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
+}
+
+/* Specifik bakgrundsbild för Empowered Elevation-sidan */
+.empowered_elevetion-background {
+    background-image: url('/images/Motivational.jpg'); /* Ändra till sökvägen till din bakgrundsbild */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    padding: 20px; /* Lägg till lite padding för att innehållet inte ska ligga direkt mot kanten */
+    min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
+}
+
 /* Länkar och knappar */
 a, .btn-link {
     color: #006bb7;
