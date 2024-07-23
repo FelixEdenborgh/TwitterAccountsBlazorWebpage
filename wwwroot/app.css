@@ -41,7 +41,7 @@ html, body {
 }
 
 /* Specifik bakgrundsbild för Empowered Elevation-sidan */
-.empowered_elevetion-background {
+.empowered-elevation-background {
     background-image: url('/images/Motivational.jpg'); /* Ändra till sökvägen till din bakgrundsbild */
     background-size: cover;
     background-position: center;
