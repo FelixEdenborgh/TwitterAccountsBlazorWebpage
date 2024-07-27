@@ -15,7 +15,7 @@ public class RssFeedService
 
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {
-        var response = await _httpClient.GetStringAsync("https://rss.app/feeds/iD1r5QRdw0njjdkI.xml");
+        var response = await _httpClient.GetStringAsync("https://rss.app/feeds/MLwQkfCtyOzSCPTb.xml");
         var products = ParseRssFeed(response);
         return products;
     }
