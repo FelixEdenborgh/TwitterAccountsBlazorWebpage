@@ -1,6 +1,7 @@
 ﻿@page "/cs2cases"
 
 @using Microsoft.AspNetCore.Components
+@using TwitterAccountsBlazorWebpage.Models
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
@@ -13,26 +14,43 @@
         </div>
         <div class="col-md-8">
             <div class="link-list mt-3">
-                <div class="link-groups d-flex flex-wrap">
-                    @foreach (var group in linkGroups)
-                    {
-                        <div class="link-group-box mt-3 p-2 flex-grow-1">
-                            <h5>@group.Header</h5>
-                            <ul class="list-group">
-                                @foreach (var link in group.Links)
-                                {
-                                    <li class="list-group-item">
-                                        <a href="@link.Url" target="_blank">@link.Name</a>
-                                    </li>
-                                }
-                            </ul>
+                @foreach (var group in linkGroups)
+                {
+                    <div>
+                        <div class="link-group-header p-2 mb-3">
+                            <h4>@group.Header</h4>
                         </div>
-                    }
-                </div>
+                        @foreach (var link in group.Links)
+                        {
+                            <div class="link-item-box mb-3">
+                                <div class="link-item-header p-3" @onclick="() => ToggleLinkVisibility(link)">
+                                    <h5>@link.Name</h5>
+                                </div>
+                                @if (link.IsVisible)
+                                {
+                                    <div class="link-group-box mt-2">
+                                        @foreach (var block in link.ContentBlocks)
+                                        {
+                                            @if (block.Type == "image")
+                                            {
+                                                <img src="@block.Content" alt="@link.Name" class="img-fluid mb-2" />
+                                            }
+                                            else if (block.Type == "description")
+                                            {
+                                                <p>@block.Content</p>
+                                            }
+                                        }
+
+                                        <a href="@link.Url" target="_blank" class="btn btn-primary">Click Here to Find Out More</a>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         </div>
     </div>
-    <button class="btn btn-primary mt-3" @onclick="GoToTwitter">Twitter</button>
 </div>
 
 @code {
@@ -43,8 +61,221 @@
             Header = "Make money from home",
             Links = new List<LinkItem>
             {
-                new LinkItem { Name = "Freecash, best website to make money from home!", Url = "https://freecash.com/r/empowered" },
-                new LinkItem { Name = "Rent out your cs skins to earn a living 100% passive", Url = "https://lootbear.com/r/Gooffball" }
+                new LinkItem
+                {
+                    Name = "Rent out your CS skins to earn a living 100% passively",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://lootbear.com/r/Gooffball",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/lootbearlandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "1. For Renters: Players can search for specific skins they want to use and rent them for a specified period." +
+                                            "The cost is generally much lower than the market price for purchasing the skin outright." },
+                        new ContentBlock { Type = "description", Content = "2. For Owners: Users who own CS" +
+                                            "skins can list them on LootBear and set rental prices. They earn money each time someone rents their items." },
+                        new ContentBlock { Type = "description", Content = "LootBear is a safe and secure platform" +
+                                            ", offering peace of mind to all its users" +
+                                            ". The site is designed with robust security measures to protect both renters and item owners" +
+                                            ". In the unlikely event that something goes wrong, such as an item being lost or stolen" +
+                                            ", LootBear guarantees that you will get 100% of your money back" +
+                                            ". This commitment to security and customer satisfaction ensures that you can use the platform with confidence" +
+                                            ", knowing that your transactions and items are fully protected."},
+
+                        new ContentBlock { Type = "image", Content = "/images/lootbearrenting.png" },
+                        new ContentBlock { Type = "description", Content = "LootBear offers a unique and flexible renting system that caters to both players looking to try out new weapons or agents and those who want to monetize their own inventory" +
+                                            ". For players, LootBear provides the opportunity to access a wide range of CS:GO skins and agents without the need for a large upfront investment" +
+                                            ". Whether you're looking to experiment with new items or just want to enhance your gameplay with premium skins, LootBear makes it easy and affordable" +
+                                            ". On the other hand, users who own valuable skins or agents can rent them out through the platform, earning money each time someone rents their items" +
+                                            ". This creates a win-win situation, where players get access to high-quality items, and owners earn passive income" +
+                                            ". LootBear also offers various package prices and price ranges to suit different budgets" +
+                                            ". The most affordable option starts at just $9.99 per month, allowing users to rent items worth up to $400 within that budget" +
+                                            ". This tiered pricing structure makes it accessible for everyone, whether you're looking to dip your toes into the world of premium CS:GO items or want to fully immerse yourself in the best skins available" +
+                                            "."
+                                             },
+
+                        new ContentBlock { Type = "image", Content = "/images/lootbearshop.png" },
+                        new ContentBlock { Type = "description", Content = "On top of renting, LootBear also allows users to buy and sell items directly on the platform" +
+                                            ". This feature gives players the flexibility to not only access premium skins and agents but also to build and manage their own inventory" +
+                                            ". Once you've purchased an item on LootBear, you can immediately start renting it out to other users, creating a potential snowball effect for passive income" +
+                                            ". This means that the items you buy can begin earning money for you right away, without any additional effort" +
+                                            ". Alternatively, if you'd prefer to use the items yourself, you can take them out to enhance your gameplay at any time" +
+                                            ". This combination of buying, selling, and renting makes LootBear a versatile platform for both casual players and serious collectors" +
+                                            ", allowing you to maximize the value of your CS:GO inventory in multiple ways" +
+                                            "."
+                                             },
+                        new ContentBlock { Type = "image", Content = "/images/lootbearsmartpage.png" },
+                        new ContentBlock { Type = "description", Content = "LootBear not only offers a robust renting and trading system but also provides a comprehensive analytics platform that users love" +
+                                            ". With this intuitive tool, you can easily track all your profits and monitor the performance of each item in your inventory" +
+                                            ". The analytics dashboard gives you a clear overview of how much you’re earning, which items are most popular, and how your investments are growing over time" +
+                                            ". This level of insight makes it simple to optimize your strategy, whether you're focusing on renting out items or actively trading on the platform" +
+                                            ". Additionally, LootBear offers the convenience of cashing out your earnings directly to your own wallet through PayPal" +
+                                            ". This seamless integration ensures that your hard-earned profits are just a few clicks away, making it easy to access your money whenever you need it" +
+                                            ". Whether you're a casual player or a dedicated trader, LootBear's analytics and cashout features provide the tools you need to manage your inventory and maximize your returns" +
+                                            "."
+                                            },
+                        new ContentBlock { Type = "description", Content = "On LootBear, you can earn passive income by renting out your items, with earnings calculated as approximately your item's value divided by 1,000 per day" +
+                                            ". Each item has a minimum rental period of 9 days, ensuring that you secure a steady return from each rental" +
+                                            ". Over the course of about 1,000 days, you can achieve a full return on your investment for each item, making it a long-term but reliable income stream" +
+                                            ". The best part is that this income is 100% AFK and completely passive, meaning you never need to lift a finger" +
+                                            ". Once your items are listed on LootBear, the platform handles everything automatically, from matching renters to processing payments" +
+                                            ". This makes LootBear an ideal choice for anyone looking to earn money from their CS:GO inventory without any ongoing effort" +
+                                            "."
+                                            },
+
+                        new ContentBlock { Type = "image", Content = "/images/lootbearupdateblog.png" },
+                        new ContentBlock { Type = "description", Content = "LootBear is committed to constantly improving the user experience, with frequent updates that bring new features, enhancements, and optimizations to the platform" +
+                                            ". These regular updates ensure that the site remains secure, user-friendly, and packed with the latest tools to help you manage your inventory and maximize your earnings" +
+                                            ". To keep users informed, LootBear provides detailed update notes on their website, where you can easily read about the latest changes and upcoming features" +
+                                            ". This transparency allows you to stay up-to-date with how the platform is evolving, so you can take full advantage of all the new functionalities as soon as they’re available" +
+                                            ". Whether it's a new feature for better tracking, enhanced security measures, or improvements to the rental system, you’ll always know what's happening on LootBear" +
+                                            "."
+                                            }
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "Freecash, best website to make money from home!",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://freecash.com/r/empowered",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/freecashlandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "Freecash.com is an online platform designed to help users make money from home by completing various tasks" +
+                        "It’s accessible to anyone with an internet connection and offers a simple way to earn extra income" +
+                        "The platform allows users to choose from a variety of earning methods, making it flexible for different preferences" +
+                        "Here's how you can start earning on Freecash.com" },
+
+                         new ContentBlock { Type = "description", Content = "Sign Up and Start Earning"},
+                         new ContentBlock { Type = "description", Content = "To get started, simply sign up for a free account on Freecash.com" +
+                         "Once registered, you'll gain access to a dashboard filled with tasks that you can complete to earn money" +
+                         "The tasks are categorized into surveys, offers, and watching videos, allowing you to pick the ones that suit you best" +
+                         "Each task will display the reward amount, so you know exactly what you’ll earn before you start" +
+                         "The more tasks you complete, the more you can earn."},
+
+                        new ContentBlock { Type = "description", Content = "Completing Surveys"},
+                        new ContentBlock { Type = "image", Content = "/images/freecashsurvays.png" },
+                        new ContentBlock { Type = "description", Content = "One of the primary ways to earn money on Freecash.com is by completing surveys" +
+                        "These surveys are typically offered by market research companies that want to gather opinions on various topics" +
+                        "Surveys can vary in length and reward amount, with some paying more for longer or more detailed responses" +
+                        "To maximize your earnings, it's advisable to fill out your profile information completely, as this helps match you with surveys that you're more likely to qualify for" +
+                        "The surveys are usually straightforward, and you can complete them at your own pace."},
+
+
+                        new ContentBlock { Type = "description", Content = "Taking Offers"},
+                        new ContentBlock { Type = "image", Content = "/images/freecashoffers.png" },
+                        new ContentBlock { Type = "description", Content = "Another lucrative way to earn on Freecash.com is by taking offers from the offer walls" +
+                        "These offers may include signing up for free trials, downloading apps, or making purchases through affiliate links" +
+                        "Each offer will specify the requirements you need to meet to earn the reward, which is credited to your account upon completion" +
+                        "Offers can vary widely in payout, with some offering significant rewards, especially for more involved tasks" +
+                        "This method can be particularly effective if you find offers that align with services or products you were already considering."},
+
+                        new ContentBlock { Type = "description", Content = "Watching Videos"},
+                        new ContentBlock { Type = "description", Content = "For those looking for a more passive earning option, Freecash.com also allows you to make money by watching videos" +
+                        "While this method typically offers lower rewards compared to surveys and offers, it’s an easy way to earn while multitasking" +
+                        "The platform partners with video networks to provide content that you can watch, and you'll earn points for each video you view" +
+                        "It's a simple and low-effort way to accumulate additional income over time."},
+
+                        new ContentBlock { Type = "description", Content = "Daily Rewards and Leaderboards"},
+                        new ContentBlock { Type = "image", Content = "/images/freecashleaderboard.png" },
+                        new ContentBlock { Type = "description", Content = "Freecash.com keeps users engaged with daily rewards and leaderboards" +
+                        "Each day you log in, you can claim a daily reward, which might be extra points, cash, or other bonuses" +
+                        "In addition to this, the platform features leaderboards where the top earners are rewarded with extra cash or prizes" +
+                        "This adds a competitive element and encourages consistent participation."},
+                        new ContentBlock { Type = "description", Content = "Monthly Rewards and Leaderboards"},
+                        new ContentBlock { Type = "image", Content = "/images/freecashmonthlyleaderboard.png" },
+
+                        new ContentBlock { Type = "description", Content = "Cashing Out"},
+                        new ContentBlock { Type = "image", Content = "/images/freecashcashout.png" },
+                        new ContentBlock { Type = "description", Content = "Once you’ve accumulated enough earnings, you can cash out your rewards" +
+                        "Freecash.com offers multiple payout options, including PayPal, cryptocurrencies, and gift cards to popular retailers" +
+                        "The minimum payout threshold is relatively low, allowing you to withdraw your earnings frequently if desired" +
+                        "The process is straightforward, and most users receive their payouts quickly, making it easy to turn your online efforts into real money."}
+                        
+                    }
+                }
+            }
+        },
+
+        new LinkGroup
+        {
+            Header = "Cs2 marketplaces",
+            Links = new List<LinkItem>
+            {
+                new LinkItem
+                {
+                    Name = "Dmarket, buff163 prices best trading platform out there",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://dmarket.com?ref=xIL7Rp0ySE",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/dmarketlandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "DMarket Overview" },
+                        new ContentBlock { Type = "description", Content = "DMarket.com is a global marketplace designed for trading virtual items, particularly those related to gaming" +
+                        "It focuses on in-game assets such as skins, weapons, and other valuable items from popular games like CS and Dota 2" +
+                        "The platform provides a secure environment for users to buy, sell, and exchange these items using real money or cryptocurrencies." },
+
+                        new ContentBlock { Type = "description", Content = "Secure Trading Platform" },
+                        new ContentBlock { Type = "description", Content = "DMarket is known for its secure trading platform" +
+                        "The site employs blockchain technology to ensure transparency and security in every transaction" +
+                        "This system helps prevent fraud and guarantees that all trades are fair and traceable" +
+                        "Users can confidently trade knowing that the platform safeguards their assets." },
+
+                        new ContentBlock { Type = "description", Content = "Wide Range of Items" },
+                        new ContentBlock { Type = "image", Content = "/images/dmarketshop.png" },
+                        new ContentBlock { Type = "image", Content = "/images/dmarkettrade.png" },
+                        new ContentBlock { Type = "description", Content = "The marketplace on DMarket hosts a wide range of in-game items" +
+                        "Users can browse through thousands of skins and other virtual assets, checking their market value and availability" +
+                        "The platform focuses on popular games, making it a go-to destination for gamers looking to enhance their in-game experience." },
+
+                        new ContentBlock { Type = "description", Content = "Instant Cashouts and Payment Options" },
+                        new ContentBlock { Type = "image", Content = "/images/dmarketcashout.png" },
+                        new ContentBlock { Type = "image", Content = "/images/dmarketdeposit.png" },
+                        new ContentBlock { Type = "description", Content = "One of DMarket’s standout features is its instant cashout capability" +
+                        "Users can withdraw their earnings through various payment methods, including PayPal, credit cards, and cryptocurrencies" +
+                        "This flexibility ensures that users can access their funds quickly and conveniently." }  
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "Skinport",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://skinport.com/shop/gooffball",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/skinportlandingpage.jpg" },
+                        new ContentBlock { Type = "description", Content = "Skinport.com is recognized as the largest trading platform for in-game items, particularly focusing on high-demand skins from popular games like CS, Dota 2, and Rust" +
+                        "As the largest platform of its kind, Skinport boasts an extensive inventory of items, offering a vast selection for buyers and sellers alike" +
+                        "This scale makes it the go-to destination for gamers looking to trade their virtual items in a secure and efficient environment." },
+                        
+                        new ContentBlock { Type = "description", Content = "With thousands of transactions taking place daily" },
+                        new ContentBlock { Type = "image", Content = "/images/skinportmarketplace.png" },
+                        new ContentBlock { Type = "description", Content = "With thousands of transactions taking place daily, Skinport has established itself as the premier marketplace in the gaming community" +
+                        "Its wide-reaching user base ensures that there is always a diverse range of items available, from common skins to rare, high-value collectibles" +
+                        "The platform’s large size also contributes to competitive pricing, as the sheer volume of listings creates a dynamic market where users can find the best deals." },
+                        new ContentBlock { Type = "description", Content = "Skinport’s status as the largest trading platform is further reinforced by its comprehensive features and user-friendly interface" +
+                        "Whether you are a seasoned trader or new to the world of virtual item trading, Skinport provides the tools and resources needed to navigate the market with ease" +
+                        "The platform’s extensive reach and influence have made it the trusted choice for millions of users around the world." },
+                        new ContentBlock { Type = "description", Content = "As the largest platform, Skinport continues to grow, attracting more users and expanding its offerings" +
+                        "This growth not only enhances the trading experience but also ensures that Skinport remains at the forefront of the industry, setting the standard for what a trading platform should be." },
+
+                        new ContentBlock { Type = "image", Content = "/images/skinportstats.png" },
+                        new ContentBlock { Type = "description", Content = "One of the standout features of Skinport.com is its comprehensive and user-friendly stats page" +
+                        "This page is designed to provide users with detailed insights into their trading activities, making it easier than ever to track sales and earnings" +
+                        "Whether you're a casual seller or a high-volume trader, Skinport's stats page offers all the information you need to manage your trades effectively." },
+                        new ContentBlock { Type = "description", Content = "On the stats page, you can access detailed information on every item you've sold" + "This includes the exact sale price, the date of the transaction, and how much you earned after fees" +
+                        "This level of transparency allows you to keep a close eye on your trading performance and make informed decisions about future sales" +
+                        "You can also filter and sort your sales data to view specific time frames or categories, giving you complete control over how you analyze your trading history." },
+                        new ContentBlock { Type = "description", Content = "In addition to tracking individual sales, Skinport's stats page also provides a clear overview of your expected earnings" +
+                        "You can see exactly how much you will receive in cashouts for the current month, week, or even day, based on the items you've sold" +
+                        "This feature is incredibly useful for budgeting and planning, as it gives you a precise understanding of your cash flow from trading activities." },
+                        new ContentBlock { Type = "description", Content = "Moreover, the stats page is fully customizable, allowing you to adjust the settings to match your personal preferences" +
+                        "Whether you want to focus on daily earnings or take a broader view of your monthly performance, Skinport gives you the flexibility to tailor the stats to your needs" +
+                        "This customization ensures that you can monitor your trading activities in a way that fits your standards and goals." },
+                        new ContentBlock { Type = "description", Content = "Overall, the stats page on Skinport is an invaluable tool for any user looking to maximize their trading potential" +
+                        "Its detailed insights, combined with customizable features, make it easy to stay on top of your sales and ensure you're getting the most out of your trading experience" +
+                        "With Skinport, you have all the information you need to succeed right at your fingertips." }
+                    }
+                }
             }
         },
         new LinkGroup
@@ -52,53 +283,240 @@
             Header = "Free skins, and daily rewards",
             Links = new List<LinkItem>
             {
-                new LinkItem { Name = "CsgoRoll: Daily free + Bonus on deposit", Url = "https://csgoroll.com/r/GOOFFBALL" },
-                new LinkItem { Name = "Csgo500: Bonus on deposit", Url = "https://500.casino/r/76561197968553434" },
-                new LinkItem { Name = "Farmskins: Daily free bonus + Bonus on deposit", Url = "https://farmskins.com/ref-1053462" },
-                new LinkItem { Name = "Bloodycase: 5 Free cases on register + Bonus on deposit and more", Url = "https://bloodycase.com/?promocode=R491778" },
-                new LinkItem { Name = "CsgoCases: Free dailys + Bonus on register and Deposit", Url = "https://csgocases.com/r/b192567cw" },
-                new LinkItem { Name = "Casehug: Free dailys + Cashback + Bonus on deposit", Url = "https://casehug.com/r/75D88C0649E34B7A" },
-                new LinkItem { Name = "CsgoEmpire: Free daily cash + Bonus cases + Deposit bonus", Url = "https://csgoempire.com/r/Gooffball" },
-                new LinkItem { Name = "Rain: Bonus on deposit + Free case + Rewards daily", Url = "https://rain.gg/r/93UoMd6dfE" }
-            }
-        },
-        new LinkGroup
-        {
-            Header = "Cs2 Save Trading",
-            Links = new List<LinkItem>
-            {
-                new LinkItem { Name = "Dmarket, buff163 prices best trading platform out there", Url = "https://dmarket.com?ref=xIL7Rp0ySE" },
-                new LinkItem { Name = "Skinport: My Skinport shop", Url = "https://skinport.com/shop/gooffball" }
-            }
-        },
-        new LinkGroup
-        {
-            Header = "Shop",
-            Links = new List<LinkItem>
-            {
-                new LinkItem { Name = "EpicPulse", Url = "http://tee.pub/lic/epicpulse" }
+                new LinkItem
+                {
+                    Name = "CsgoRoll",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://csgoroll.com/r/GOOFFBALL",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/csgorolllandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "CSGORoll Overview" },
+                        new ContentBlock { Type = "description", Content = "CSGORoll.com is a leading online platform that combines the excitement of casino-style games with the unique world of CSskins" +
+                        "The site is well-known in the gaming community for offering a variety of betting games where players can wager their CSskins and potentially win valuable items" +
+                        "CSGORoll provides a secure and engaging environment for players who enjoy both gambling and gaming, with a focus on fairness and transparency." },
+
+                        new ContentBlock { Type = "image", Content = "/images/csgorolldeposit.png" },
+                        new ContentBlock { Type = "description", Content = "One of the standout features of CSGORoll is its Daily Bonus Cases" +
+                        "Every day, users have the opportunity to open a free case that can contain skins, coins, or other valuable rewards" +
+                        "This daily bonus is available to all registered users and is a great way to accumulate rewards without risking any of your own items" +
+                        "The more active you are on the site, the better the rewards you can unlock from these daily cases" +
+                        "This feature encourages regular engagement, giving players a reason to return to the site every day." },
+                        new ContentBlock { Type = "description", Content = "The Daily Bonus Cases are tiered, meaning that the more days you consecutively log in and open your case, the higher the tier of the case you receive" +
+                        "This system rewards consistency, as higher-tier cases offer better and more valuable items" +
+                        "It's an excellent way for players to boost their inventory and potentially score some high-value skins just by being active on the site." },
+
+                        new ContentBlock { Type = "image", Content = "/images/csgorolldailybonuscases.png" },
+                        new ContentBlock { Type = "description", Content = "CSGORoll also offers generous Bonus Deposit promotions" +
+                        "When you deposit funds into your account, you can receive additional bonuses, which increase the value of your deposit" +
+                        "These bonus offers are often available through promo codes or special events and can significantly boost your starting balance" +
+                        "For example, a common bonus might be a 5% to 10% increase in your deposit, giving you more coins to play with right from the start." },
+                        new ContentBlock { Type = "description", Content = "The Bonus Deposit feature is designed to give players an extra edge, allowing them to maximize their playing time and potential winnings" +
+                        "This makes it especially appealing for new players or those looking to make the most out of their deposits" +
+                        "The bonuses are easy to claim and apply automatically when you enter the relevant promo code during the deposit process" +
+                        "It's a straightforward way to enhance your experience on CSGORoll and increase your chances of winning big." },
+
+
+                        new ContentBlock { Type = "description", Content = "With so many exciting features and opportunities to win, CSGORoll.com is the perfect platform for any CSenthusiast looking to take their gaming experience to the next level" +
+                        "Whether you're interested in testing your luck with Daily Bonus Cases, boosting your deposits with generous bonuses, or simply exploring the variety of games available, there's something for everyone on CSGORoll" +
+                        "The best way to truly appreciate what the site has to offer is to come and try it out yourself" +
+                        "Experience the thrill of betting your skins, engage with a vibrant community, and see firsthand why CSGORoll is a top choice for players around the world" +
+                        "Don't miss out on the chance to win big and enhance your CSinventory—sign up today and start your journey on CSGORoll." }
+                        
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "Csgo500",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://500.casino/r/76561197968553434",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/csgo500landingpage.png" },
+                        new ContentBlock { Type = "description", Content = "CSGO500 Overview" },
+                        new ContentBlock { Type = "description", Content = "CSGO500 is an online gambling platform centered around CSskins and other in-game items" +
+                        "The site offers various casino-style games where players can wager their CSskins or coins with the chance to win more valuable items" +
+                        "CSGO500 is part of the broader CSgambling ecosystem, which is popular among players who enjoy both gaming and the thrill of betting." },
+
+                        new ContentBlock { Type = "description", Content = "Games Offered" },
+                        new ContentBlock { Type = "description", Content = "CSGO500's flagship game is its roulette, where players can bet on colors (red, black, or green) and win skins or coins based on the outcome" +
+                        "It's similar to traditional roulette found in casinos but adapted for CSplayers" +
+                        "Another popular game on the site is Crash, a high-stakes game where players bet on a multiplier that increases over time" +
+                        "The goal in Crash is to cash out before the multiplier 'crashes' to secure your winnings" +
+                        "For those who prefer direct competition, CSGO500 also offers PvP duels, where two players wager their skins or coins, and the winner takes all based on a random draw." },
+
+                        new ContentBlock { Type = "description", Content = "Bonuses and Promotions" },
+                        new ContentBlock { Type = "description", Content = "CSGO500 offers a daily reward system, allowing users to log in every day to claim free coins" +
+                        "These daily bonuses are an excellent way to keep players engaged and give them extra chances to win" +
+                        "In addition to daily bonuses, the platform features a referral program where users can earn additional bonuses by inviting friends to join CSGO500" +
+                        "This not only rewards the user but also helps grow the community, making the site more vibrant and active." }
+
+
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "Farmskins",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://farmskins.com/ref-1053462",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/farmskinslandingpage.jpg" },
+                        new ContentBlock { Type = "description", Content = "Farmskins Overview" },
+                        new ContentBlock { Type = "description", Content = "Farmskins.com is a popular online platform where users can open virtual cases to win CSskins" +
+                        "The site operates similarly to the case-opening system in Counter-Strike: Global Offensive (CS) but offers a broader variety of cases with different themes and potential rewards" +
+                        "Farmskins is part of the larger CSskin trading and gambling community, providing players with a chance to obtain rare and valuable in-game items." },
+                        
+                        new ContentBlock { Type = "description", Content = "Case Opening" },
+                        new ContentBlock { Type = "description", Content = "One of the main features of Farmskins is its extensive case-opening system" +
+                        "The platform offers a wide range of cases that users can purchase and open, each with different potential rewards" +
+                        "The cases vary in price, and the more expensive cases often contain higher-value skins" +
+                        "Additionally, Farmskins features themed cases based on popular trends, events, or collaborations, providing users with a unique and diverse selection of skins" +
+                        "This variety ensures that there is something for every player, whether they are looking for budget-friendly options or premium cases with high-value items." },
+
+                        new ContentBlock { Type = "description", Content = "Daily Free Case" },
+                        new ContentBlock { Type = "image", Content = "/images/farmskinsdailybonus.png" },
+                        new ContentBlock { Type = "description", Content = "Farmskins.com offers a Daily Free Case feature, allowing users to open a free case every day" +
+                        "This daily bonus encourages regular activity on the site and offers a chance to win free skins without spending money" +
+                        "The Daily Free Case is a popular feature that keeps users coming back, as it provides an opportunity to win valuable skins just by logging in each day." }
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "Bloodycase",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://bloodycase.com/?promocode=R491778",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/bloodycaselandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "BloodyCase Overview" },
+                        new ContentBlock { Type = "description", Content = "BloodyCase.com is an online platform where users can open virtual cases to win CSskins and other in-game items" +
+                        "The site operates similarly to other case-opening platforms like Farmskins and CSGORoll, but it offers its own unique features and attractions" +
+                        "One of the standout features of BloodyCase is that new users receive 5 free cases upon registering" +
+                        "This generous offer gives players a head start, allowing them to immediately try their luck and potentially win valuable skins without any initial investment" +
+                        "BloodyCase is designed to appeal to players looking for a chance to win valuable skins through a fun and engaging experience." },
+
+                        new ContentBlock { Type = "description", Content = "Daily Free Cases" },
+                        new ContentBlock { Type = "image", Content = "/images/bloodycasedailybonus.png" },
+                        new ContentBlock { Type = "description", Content = "One of the most appealing features of BloodyCase.com is the Daily Free Case" +
+                        "Every day, users can log in and open a free case without spending any money" +
+                        "This daily reward system encourages regular activity on the site and gives players a chance to win skins and other rewards just for being active" +
+                        "The Daily Free Case is a great way to build up your inventory without having to make a financial commitment." }
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "CsgoCases",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://csgocases.com/r/b192567cw",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/csgocaseslandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "CSGOCases Overview" },
+                        new ContentBlock { Type = "description", Content = "CSGOCases.com is an online platform where users can open virtual cases to win CSskins" +
+                        "The site operates similarly to other case-opening platforms, offering a variety of cases with different potential rewards" +
+                        "One of the unique aspects of CSGOCases is the ability to create custom cases, allowing users to tailor their case-opening experience to their preferences" +
+                        "This feature, along with free daily bonuses and special promotions, makes CSGOCases a popular choice among CSplayers looking to expand their inventory." },
+
+                        new ContentBlock { Type = "description", Content = "Free Daily Cases" },
+                        new ContentBlock { Type = "image", Content = "/images/csgocasesdailycase.png" },
+                        new ContentBlock { Type = "description", Content = "CSGOCases.com rewards its users with Free Daily Cases, adding extra value for those who visit the site regularly" +
+                        "Every day, users can log in and open a free case, potentially winning valuable skins or other rewards without spending any money" +
+                        "This daily bonus system encourages regular participation and provides users with consistent opportunities to grow their CSinventory." }
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "CsgoEmpire",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://csgoempire.com/r/Gooffball",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/csgoempirelandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "CSGOEmpire Overview" },
+                        new ContentBlock { Type = "description", Content = "CSGOEmpire.com is one of the most popular and established online gambling platforms for CSskins" +
+                        "The site operates similarly to a traditional casino but uses CSskins and virtual items as currency for betting" +
+                        "CSGOEmpire offers a variety of games, including roulette, coin flip, and match betting, allowing users to wager their skins or coins to potentially win more valuable items" +
+                        "With a strong reputation in the CScommunity, CSGOEmpire is known for its secure and fair gaming environment." },
+
+                        new ContentBlock { Type = "description", Content = "Conclusion" },
+                        new ContentBlock { Type = "description", Content = "CSGOEmpire.com is a well-established platform in the CSgambling scene, known for its wide range of betting options, secure and fair gaming environment, and active community" +
+                        "Whether you're interested in traditional casino games like roulette and coin flip, or esports match betting, CSGOEmpire offers a comprehensive experience for CSenthusiasts" +
+                        "With features like daily free cases, a Provably Fair system, and a strong referral program, CSGOEmpire is a top choice for players looking to gamble with their skins and potentially win big." }
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "Casehug",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://casehug.com/r/75D88C0649E34B7A",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/csgohuglandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "CSGOHug Overview" },
+                        new ContentBlock { Type = "description", Content = "CSGOHug.com is an online platform where users can open virtual cases to win CSskins and other in-game items" +
+                        "Similar to other case-opening sites, CSGOHug allows players to purchase and open cases that contain a variety of skins, ranging from common to rare and highly valuable ones" +
+                        "The site offers unique features like daily bonuses, cashback, and a referral program, making it an attractive option for players looking to enhance their CSinventory" +
+                        "CSGOHug is designed to provide a fun and engaging experience, with regular updates to keep the case offerings fresh and exciting." },
+
+                        new ContentBlock { Type = "description", Content = "Daily Bonuses" },
+                        new ContentBlock { Type = "image", Content = "/images/csgohugdailycases.png" },
+                        new ContentBlock { Type = "image", Content = "/images/csgohugdailyreward.png" },
+                        new ContentBlock { Type = "description", Content = "One of the standout features of CSGOHug is its Daily Bonuses, including the opportunity to open free cases every day" +
+                        "This daily reward system encourages regular participation on the platform and gives users the chance to win skins without spending any money" +
+                        "By simply logging in each day, players can take advantage of these bonuses and potentially add valuable items to their CSinventory." },
+                        
+                        new ContentBlock { Type = "description", Content = "Conclusion" },
+                        new ContentBlock { Type = "description", Content = "CSGOHug.com is a dynamic platform in the CScommunity, offering players a fun and engaging way to win valuable in-game items" +
+                        "With a wide selection of cases, daily free rewards, a transparent and fair system, and regular promotions, CSGOHug appeals to both casual players and serious collectors" +
+                        "Whether you're looking to expand your CSinventory or just enjoy the thrill of opening cases, CSGOHug provides a comprehensive and enjoyable experience for all its users." }
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "Rain",
+                    IsVisible = false, // Default to not visible
+                    Url = "https://rain.gg/r/93UoMd6dfE",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/rainlandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "Rain.gg Overview" },
+                        new ContentBlock { Type = "description", Content = "Rain.gg is an online gambling platform specifically designed for the CScommunity, offering various betting options using CSskins and other in-game items as currency" +
+                        "The site is known for its range of games, including crash, jackpot, and coin flip, where users can wager their skins to win more valuable items" +
+                        "Rain.gg also features daily bonuses, rain events, and a referral program to enhance user engagement and reward active players" +
+                        "The platform is built to provide a fun and engaging experience for both casual players and serious gamblers." },
+
+                        new ContentBlock { Type = "description", Content = "Rain Events" },
+                        new ContentBlock { Type = "description", Content = "One of the unique features of Rain.gg is its Rain Events, designed to reward active users on the platform" +
+                        "Automatic Rain events randomly distribute free coins or skins to players who are actively participating on the site" +
+                        "These surprise rewards create excitement and encourage users to stay engaged" +
+                        "There’s also a Community Rain feature, where users can trigger rain events by making deposits or participating in specific activities" +
+                        "This fosters a sense of community and interaction among players, making the experience more enjoyable." },
+
+                        new ContentBlock { Type = "image", Content = "/images/raindailycases.png" },
+                        new ContentBlock { Type = "description", Content = "Daily Bonuses" },
+                        new ContentBlock { Type = "description", Content = "Rain.gg provides daily bonuses to its users, which can include free coins, skins, or other rewards" +
+                        "By logging in every day, users can claim these bonuses, enhancing their chances of winning in the various games offered on the site" +
+                        "This daily reward system encourages regular participation and provides consistent value to the players." },
+
+                        new ContentBlock { Type = "description", Content = "Conclusion" },
+                        new ContentBlock { Type = "description", Content = "Rain.gg is a dynamic platform for CSplayers who enjoy gambling with their in-game items" +
+                        "With a variety of games, rain events, daily bonuses, and a transparent Provably Fair system, Rain.gg offers a comprehensive and enjoyable experience for both casual players and serious gamblers looking to win big" +
+                        "Whether you're interested in testing your luck in crash, trying your hand at jackpot, or engaging in the thrill of coin flip, Rain.gg has something for everyone." }
+                    }
+                }
             }
         }
-        // Lägg till fler grupper och länkar här
+
+        // Add more LinkGroups and LinkItems here...
     };
 
-    private void GoToTwitter()
+    private void ToggleLinkVisibility(LinkItem link)
     {
-        NavigationManager.NavigateTo("https://x.com/Cs2_Cases", true);
+        link.IsVisible = !link.IsVisible;
     }
 
     [Inject]
     private NavigationManager NavigationManager { get; set; }
 
-    public class LinkItem
-    {
-        public string Name { get; set; }
-        public string Url { get; set; }
-    }
-
-    public class LinkGroup
-    {
-        public string Header { get; set; }
-        public List<LinkItem> Links { get; set; }
-    }
 }

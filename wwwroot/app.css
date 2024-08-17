@@ -4,6 +4,7 @@ html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: #f4f4f4; /* Light gray fallback */
     background-image: url('path/to/your/background-image.jpg'); /* Ändra till sökvägen till din bakgrundsbild */
     background-size: cover;
     background-position: center;
@@ -16,8 +17,9 @@ html, body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    padding: 20px; /* Lägg till lite padding för att innehållet inte ska ligga direkt mot kanten */
-    min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
+    background-color: #f4f4f4; /* Fallback color */
+    padding: 20px;
+    min-height: 100vh;
 }
 
 /* Specifik bakgrundsbild för Global news-sidan */
@@ -26,8 +28,9 @@ html, body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    padding: 20px; /* Lägg till lite padding för att innehållet inte ska ligga direkt mot kanten */
-    min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
+    background-color: #f4f4f4; /* Fallback color */
+    padding: 20px;
+    min-height: 100vh;
 }
 
 /* Specifik bakgrundsbild för Cs2-sidan */
@@ -36,8 +39,9 @@ html, body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    padding: 20px; /* Lägg till lite padding för att innehållet inte ska ligga direkt mot kanten */
-    min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
+    background-color: #f4f4f4; /* Fallback color */
+    padding: 20px;
+    min-height: 100vh;
 }
 
 /* Specifik bakgrundsbild för Empowered Elevation-sidan */
@@ -46,8 +50,9 @@ html, body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    padding: 20px; /* Lägg till lite padding för att innehållet inte ska ligga direkt mot kanten */
-    min-height: 100vh; /* Se till att sidan tar upp hela höjden på skärmen */
+    background-color: #f4f4f4; /* Fallback color */
+    padding: 20px;
+    min-height: 100vh;
 }
 
 /* Länkar och knappar */
@@ -56,14 +61,23 @@ a, .btn-link {
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
+    color: #fff !important; /* Force the text color to be white */
+    background-color: #1b6ec2; /* Your primary button color */
     border-color: #1861ac;
+    transition: background-color 0.2s, box-shadow 0.2s;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+    .btn-primary:hover {
+        background-color: #155a8e;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary:focus, .btn-primary:active {
+        color: #fff !important; /* Ensure the text remains white even when focused or active */
+        background-color: #1b6ec2;
+        border-color: #1861ac;
+        box-shadow: 0 0 0 0.2rem rgba(27, 110, 194, 0.5);
+    }
 
 /* Innehåll */
 .content {
@@ -300,32 +314,96 @@ h1:focus {
 }
 
 /* Anpassade stilar för länkgrupper och bakgrund */
-.link-groups {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.link-group-box {
-    flex: 1 1 30%;
-    box-sizing: border-box;
-    margin: 10px;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 15px;
-    min-width: 250px; /* Lägger till en minimibredd */
-    max-width: 30%; /* Begränsar bredden till 30% */
-}
-
-@media (max-width: 768px) {
-    .link-group-box {
-        flex: 1 1 100%; /* Full bredd på mindre skärmar */
-    }
-}
-
 .link-list {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 10px;
+}
+
+/* Header box styling for each group */
+.link-group-header {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Styling for the clickable link item headers */
+.link-item-box {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    cursor: pointer; /* Indicates clickable element */
+    transition: background-color 0.2s ease;
+}
+
+.link-item-header {
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    text-align: center;
+}
+
+    .link-item-header:hover {
+        background-color: #ced4da;
+    }
+
+/* Styling for the link group boxes */
+.link-group-box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%; /* Ensures the box takes full width of the parent container */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px; /* Adds space between each box */
+}
+
+    /* Images within the link group box */
+    .link-group-box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    /* Headers within the link group box */
+    .link-group-box h5 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    /* Paragraphs within the link group box */
+    .link-group-box p {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 15px;
+    }
+
+    /* Button within the link group box */
+    .link-group-box a {
+        display: block;
+        margin-top: 10px;
+        color: #fff !important; /* Ensures text is always white */
+        text-align: center;
+        padding: 10px;
+        background-color: #1b6ec2;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.2s;
+    }
+
+        .link-group-box a:hover {
+            background-color: #155a8e;
+        }
+
+@media (max-width: 768px) {
+    .link-group-box {
+        flex: 1 1 100%; /* Full width on smaller screens */
+        margin: 10px 0; /* Adjust margin for full-width boxes */
+    }
 }
 
 .tweet-list {
