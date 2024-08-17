@@ -2,11 +2,16 @@
 @using TwitterAccountsBlazorWebpage.Models
 @inject RssFeedService RssFeedService
 
-<h3>Our Products</h3>
+<h3 class="text-center">Our Products</h3>
 
 @if (products == null)
 {
-    <p><em>Loading...</em></p>
+    <div class="loading-container">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p><em>Loading...</em></p>
+    </div>
 }
 else
 {
@@ -16,7 +21,7 @@ else
             <div class="product-card">
                 <img src="@product.ImageUrl" alt="@product.Title" />
                 <h4>@product.Title</h4>
-                <a href="@product.Link" target="_blank">View on TeePublic</a>
+                <a href="@product.Link" target="_blank" class="btn btn-primary btn-sm mt-2">View on TeePublic</a>
             </div>
         }
     </div>

@@ -139,45 +139,53 @@ h1:focus {
 .product-grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around; /* Use space-around to better space items */
-    gap: 10px; /* Add some space between items */
+    justify-content: center; /* Center items */
+    gap: 20px; /* Add space between items */
     margin: 0 auto; /* Center the grid */
-    padding: 10px; /* Add some padding */
+    padding: 20px; /* Add padding */
     max-width: 1400px; /* Adjust the maximum width as needed */
 }
 
 .product-card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px;
-    width: calc(20% - 20px); /* Five columns on large screens */
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
     background-color: #fff;
-    transition: transform 0.2s; /* Smooth transform on hover */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    max-width: 200px;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
     .product-card img {
         max-width: 100%;
         height: auto;
-        border-radius: 5px 5px 0 0;
+        border-radius: 8px 8px 0 0;
+        margin-bottom: 10px;
     }
 
     .product-card h4 {
-        margin: 10px 0;
-        font-size: 1rem; /* Adjust font size if needed */
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: #333;
     }
 
     .product-card a {
-        display: block;
-        margin-top: 10px;
-        color: #006bb7;
+        color: #fff;
+        background-color: #1b6ec2;
+        border-radius: 5px;
+        padding: 8px 12px;
         text-decoration: none;
+        transition: background-color 0.2s;
     }
 
+        .product-card a:hover {
+            background-color: #155a8e;
+        }
+
     .product-card:hover {
-        transform: scale(1.05); /* Slightly enlarge on hover */
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
 /* Media query for medium screens */
@@ -406,6 +414,7 @@ h1:focus {
     }
 }
 
+/* Tweet list styling */
 .tweet-list {
     margin-top: 20px;
 }
