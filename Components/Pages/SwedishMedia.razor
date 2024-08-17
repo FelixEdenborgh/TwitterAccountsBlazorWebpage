@@ -1,6 +1,7 @@
 ﻿@page "/swedish_media"
 
 @using Microsoft.AspNetCore.Components
+@using TwitterAccountsBlazorWebpage.Models
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
@@ -13,26 +14,43 @@
         </div>
         <div class="col-md-8">
             <div class="link-list mt-3">
-                <div class="link-groups d-flex flex-wrap">
-                    @foreach (var group in linkGroups)
-                    {
-                        <div class="link-group-box mt-3 p-2 flex-grow-1">
-                            <h5>@group.Header</h5>
-                            <ul class="list-group">
-                                @foreach (var link in group.Links)
-                                {
-                                    <li class="list-group-item">
-                                        <a href="@link.Url" target="_blank">@link.Name</a>
-                                    </li>
-                                }
-                            </ul>
+                @foreach (var group in linkGroups)
+                {
+                    <div>
+                        <div class="link-group-header p-2 mb-3">
+                            <h4>@group.Header</h4>
                         </div>
-                    }
-                </div>
+                        @foreach (var link in group.Links)
+                        {
+                            <div class="link-item-box mb-3">
+                                <div class="link-item-header p-3" @onclick="() => ToggleLinkVisibility(link)">
+                                    <h5>@link.Name</h5>
+                                </div>
+                                @if (link.IsVisible)
+                                {
+                                    <div class="link-group-box mt-2">
+                                        @foreach (var block in link.ContentBlocks)
+                                        {
+                                            @if (block.Type == "image")
+                                            {
+                                                <img src="@block.Content" alt="@link.Name" class="img-fluid mb-2" />
+                                            }
+                                            else if (block.Type == "description")
+                                            {
+                                                <p>@block.Content</p>
+                                            }
+                                        }
+
+                                        <a href="@link.Url" target="_blank" class="btn btn-primary">Klicka här för att få veta mer</a>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
             </div>
         </div>
     </div>
-    <button class="btn btn-primary mt-3" @onclick="GoToTwitter">Twitter</button>
 </div>
 
 @code {
@@ -43,17 +61,66 @@
             Header = "Tjäna pengar hemifrån",
             Links = new List<LinkItem>
             {
-                new LinkItem { Name = "Freecash: Spela spel, gör undersökningar, se videos och få betalt!", Url = "https://freecash.com/r/empowered" },
-                new LinkItem { Name = "Lootbear: Investera lite smått och hyr ut pengarna i form av spel saker till andra", Url = "https://lootbear.com/r/Gooffball" },
-                new LinkItem { Name = "SveaPanelen: Gör undersökningar få 1kr till 50kr per undersökning + tävlingar som ger bonus varje dag! utbetaldning via swish", Url = "https://sveapanelen.se/r/C2LGM" }
-            }
-        },
-        new LinkGroup
-        {
-            Header = "Affär",
-            Links = new List<LinkItem>
-            {
-                new LinkItem { Name = "EpicPulse: Fantastiska klädder och annat kul", Url = "http://tee.pub/lic/epicpulse" }
+                new LinkItem
+                {
+                    Name = "Freecash: Spela spel, gör undersökningar, se videos och få betalt!",
+                    IsVisible = false,
+                    Url = "https://freecash.com/r/empowered",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "image", Content = "/images/freecashlandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "Freecash.com är en onlineplattform utformad för att hjälpa användare att tjäna pengar hemifrån genom att utföra olika uppgifter" +
+                        "Det är tillgängligt för alla med en internetanslutning och erbjuder ett enkelt sätt att tjäna extra inkomst" +
+                        "Plattformen låter användare välja mellan olika sätt att tjäna pengar, vilket gör det flexibelt för olika preferenser" +
+                        "Så här kan du börja tjäna pengar på Freecash.com." },
+
+                        new ContentBlock { Type = "description", Content = "Registrera dig och börja tjäna" },
+                        new ContentBlock { Type = "description", Content = "För att komma igång, registrera dig gratis på Freecash.com" +
+                        "När du har registrerat dig får du tillgång till en kontrollpanel fylld med uppgifter som du kan utföra för att tjäna pengar" +
+                        "Uppgifterna är kategoriserade i undersökningar, erbjudanden och videovisningar, så att du kan välja de som passar dig bäst" +
+                        "Varje uppgift visar belöningsbeloppet, så att du vet exakt vad du kommer att tjäna innan du börjar" +
+                        "Ju fler uppgifter du slutför, desto mer kan du tjäna." },
+
+                        new ContentBlock { Type = "description", Content = "Genomföra undersökningar" },
+                        new ContentBlock { Type = "image", Content = "/images/freecashsurvays.png" },
+                        new ContentBlock { Type = "description", Content = "En av de främsta sätten att tjäna pengar på Freecash.com är genom att genomföra undersökningar" +
+                        "Dessa undersökningar erbjuds vanligtvis av marknadsundersökningsföretag som vill samla in åsikter om olika ämnen" +
+                        "Undersökningar kan variera i längd och belöning, där vissa betalar mer för längre eller mer detaljerade svar" +
+                        "För att maximera dina intäkter är det lämpligt att fylla i din profilinformation fullständigt, eftersom detta hjälper dig att matchas med undersökningar som du har större sannolikhet att kvalificera dig för" +
+                        "Undersökningarna är vanligtvis enkla och du kan genomföra dem i din egen takt." },
+
+                        new ContentBlock { Type = "description", Content = "Ta erbjudanden" },
+                        new ContentBlock { Type = "image", Content = "/images/freecashoffers.png" },
+                        new ContentBlock { Type = "description", Content = "Ett annat lönsamt sätt att tjäna på Freecash.com är genom att ta erbjudanden från erbjudandemuren" +
+                        "Dessa erbjudanden kan innefatta att registrera dig för gratis provperioder, ladda ner appar eller göra köp via affiliate-länkar" +
+                        "Varje erbjudande specificerar kraven du behöver uppfylla för att tjäna belöningen, som krediteras till ditt konto efter slutförandet" +
+                        "Erbjudanden kan variera mycket i utbetalning, med vissa som erbjuder betydande belöningar, särskilt för mer involverade uppgifter" +
+                        "Denna metod kan vara särskilt effektiv om du hittar erbjudanden som passar med tjänster eller produkter du redan övervägde." },
+
+                        new ContentBlock { Type = "description", Content = "Titta på videor" },
+                        new ContentBlock { Type = "description", Content = "För dem som letar efter ett mer passivt sätt att tjäna pengar erbjuder Freecash.com också möjligheten att tjäna pengar genom att titta på videor" +
+                        "Även om denna metod vanligtvis erbjuder lägre belöningar jämfört med undersökningar och erbjudanden, är det ett enkelt sätt att tjäna medan du multitaskar" +
+                        "Plattformen samarbetar med videonätverk för att tillhandahålla innehåll som du kan titta på, och du tjänar poäng för varje video du ser" +
+                        "Det är ett enkelt och ansträngningslöst sätt att samla ytterligare inkomst över tid." },
+
+                        new ContentBlock { Type = "description", Content = "Dagliga belöningar och topplistor" },
+                        new ContentBlock { Type = "image", Content = "/images/freecashleaderboard.png" },
+                        new ContentBlock { Type = "description", Content = "Freecash.com håller användarna engagerade med dagliga belöningar och topplistor" +
+                        "Varje dag du loggar in kan du hämta en daglig belöning, som kan vara extra poäng, pengar eller andra bonusar" +
+                        "Dessutom har plattformen topplistor där de bästa tjänarna belönas med extra pengar eller priser" +
+                        "Detta lägger till ett tävlingsmoment och uppmuntrar till konsekvent deltagande." },
+
+                        new ContentBlock { Type = "description", Content = "Månatliga belöningar och topplistor" },
+                        new ContentBlock { Type = "image", Content = "/images/freecashmonthlyleaderboard.png" },
+
+                        new ContentBlock { Type = "description", Content = "Uttag av pengar" },
+                        new ContentBlock { Type = "image", Content = "/images/freecashcashout.png" },
+                        new ContentBlock { Type = "description", Content = "När du har samlat tillräckligt med intäkter kan du ta ut dina belöningar" +
+                        "Freecash.com erbjuder flera utbetalningsalternativ, inklusive PayPal, kryptovalutor och presentkort till populära återförsäljare" +
+                        "Minsta utbetalningströskel är relativt låg, vilket gör att du kan ta ut dina intäkter ofta om du vill" +
+                        "Processen är enkel, och de flesta användare får sina utbetalningar snabbt, vilket gör det lätt att omvandla dina online-insatser till riktiga pengar." }
+                    }
+                }
             }
         },
         new LinkGroup
@@ -61,40 +128,126 @@
             Header = "Tjäna pengar genom att gå",
             Links = new List<LinkItem>
             {
-                new LinkItem { Name = "Sweatco: En app som ger dig belöningar i form av pengar och crypto när du promenerar", Url = "https://sweatco.in/hi/felixedenborgh" },
-                new LinkItem { Name = "SteplerApp: En app som ger dig poäng som du kan omvandla till pengar + mer, som du får från att röra på dig", Url = "https://steplerapp.page.link/5TeiphQzk4PPYJsK9" }
+                new LinkItem
+                {
+                    Name = "Sweatco: En app som ger dig belöningar i form av pengar och crypto när du promenerar",
+                    IsVisible = false,
+                    Url = "https://sweatco.in/hi/felixedenborgh",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "description", Content = "Översikt av Sweatcoin" },
+                        new ContentBlock { Type = "image", Content = "/images/sweatcoinlandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "Sweatcoin är en mobilapp som belönar användare för att vara aktiva" +
+                        "Speciellt genom att promenera eller springa" +
+                        "Appen spårar din fysiska aktivitet och omvandlar dina steg till en digital valuta känd som Sweatcoins" +
+                        "Dessa Sweatcoins kan sedan användas för att köpa varor och tjänster i appens marknadsplats" +
+                        "Inklusive träningsutrustning, prylar och till och med upplevelser" +
+                        "Alternativt kan användare donera sina Sweatcoins till välgörenhet eller spara dem för större belöningar." },
+
+                        new ContentBlock { Type = "description", Content = "Hur det fungerar" },
+                        new ContentBlock { Type = "description", Content = "För att komma igång med Sweatcoin, behöver du bara ladda ner appen och skapa ett konto" +
+                        "När du är registrerad börjar appen spåra dina utomhussteg med hjälp av din telefons GPS och accelerometer" +
+                        "För varje 1 000 steg du tar, tjänar du en viss mängd Sweatcoins" +
+                        "Den exakta omvandlingskursen kan variera, men typiskt tjänar du cirka 0,95 Sweatcoins för varje 1 000 steg" +
+                        "Appen körs i bakgrunden, så du kan fortsätta med dina dagliga aktiviteter samtidigt som du tjänar belöningar." },
+
+                        new ContentBlock { Type = "description", Content = "Tjäna Sweatcoins" },
+                        new ContentBlock { Type = "description", Content = "Sweatcoin erbjuder olika sätt att tjäna, inklusive dagliga bonusar och speciella utmaningar" +
+                        "Varje dag kan användare titta på annonser eller slutföra vissa uppgifter för att tjäna bonus-Sweatcoins" +
+                        "Dessutom kör appen ofta specialerbjudanden eller utmaningar där du kan tjäna extra mynt genom att uppnå specifika mål" +
+                        "Som att gå ett visst antal steg på en dag eller vecka" +
+                        "Dessa funktioner gör det möjligt att samla Sweatcoins snabbare." },
+
+                        new ContentBlock { Type = "description", Content = "Slutsats" },
+                        new ContentBlock { Type = "description", Content = "Sweatcoin är mer än bara en träningsapp" +
+                        "Det är ett motivationsverktyg som uppmuntrar människor att vara mer aktiva genom att erbjuda konkreta belöningar för deras insatser" +
+                        "Oavsett om du vill förbättra din kondition, tjäna belöningar eller stödja välgörenhetsorganisationer" +
+                        "Sweatcoin ger ett engagerande sätt att omvandla dina dagliga steg till något värdefullt" +
+                        "Med sin kombination av hälsofördelar, belöningar och community-funktioner är Sweatcoin en innovativ app som har lockat miljontals användare över hela världen." }
+                    }
+                },
+                new LinkItem
+                {
+                    Name = "SteplerApp: En app som ger dig poäng som du kan omvandla till pengar + mer, som du får från att röra på dig",
+                    IsVisible = false,
+                    Url = "https://steplerapp.page.link/5TeiphQzk4PPYJsK9",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "description", Content = "Översikt av Stepler" },
+                        new ContentBlock { Type = "image", Content = "/images/steplerlandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "Stepler är en mobilapp utformad för att motivera användare att hålla sig aktiva genom att belöna dem för att gå" +
+                        "Appen spårar dina steg och omvandlar dem till poäng" +
+                        "Dessa poäng kan lösas in mot olika belöningar, inklusive presentkort, rabatter och andra erbjudanden" +
+                        "Stepler är en del av en växande trend av appar som uppmuntrar till en hälsosammare livsstil genom att erbjuda konkreta belöningar för fysisk aktivitet." },
+
+                        new ContentBlock { Type = "description", Content = "Hur det fungerar" },
+                        new ContentBlock { Type = "description", Content = "För att börja använda Stepler, behöver du ladda ner appen och skapa ett konto" +
+                        "När du är registrerad börjar appen spåra dina steg med hjälp av din telefons inbyggda sensorer" +
+                        "För varje steg du tar, tjänar du poäng som samlas i ditt konto" +
+                        "Appen körs i bakgrunden, så du kan fortsätta dina dagliga aktiviteter samtidigt som du tjänar belöningar." },
+
+                        new ContentBlock { Type = "description", Content = "Slutsats" },
+                        new ContentBlock { Type = "description", Content = "Stepler är ett effektivt verktyg för dem som vill öka sina dagliga aktivitetsnivåer" +
+                        "Genom att omvandla steg till belöningar ger appen en extra motivation att hålla sig aktiv" +
+                        "Oavsett om du vill förbättra din kondition, tjäna belöningar eller bara spåra din dagliga aktivitet" +
+                        "Erbjuder Stepler ett enkelt och engagerande sätt att införa mer rörelse i din vardag" +
+                        "Med sin kombination av stegräkning, belöningar och sociala funktioner är Stepler ett populärt val för alla som vill leva en hälsosammare livsstil." }
+                    }
+                }
             }
         },
+
         new LinkGroup
         {
-            Header = "Passive income",
+            Header = "Passiv inkomst",
             Links = new List<LinkItem>
             {
-                new LinkItem { Name = "Pawns: Hyr ut din mobil data, det överblivna varje månad och få betalt", Url = "https://gopawns.eu/Gooffball" },
-                new LinkItem { Name = "Refunder: 100kr vid regestering + pengar tillbaka vid varje köp", Url = "https://www.refunder.se/bjud-in/654dfae0e7007" },
-                new LinkItem { Name = "Lootbear: Tjäna pengar genom att investera i cs2 'cs vapen' som du kan hyra ut dagligen för att få pengar", Url = "https://lootbear.com/r/Gooffball" }
+                new LinkItem
+                {
+                    Name = "Pawns: Hyr ut din mobil data, det överblivna varje månad och få betalt",
+                    IsVisible = false,
+                    Url = "https://gopawns.eu/Gooffball",
+                    ContentBlocks = new List<ContentBlock>
+                    {
+                        new ContentBlock { Type = "description", Content = "Översikt av GoPawns" },
+                        new ContentBlock { Type = "image", Content = "/images/pawnslandingpage.png" },
+                        new ContentBlock { Type = "description", Content = "GoPawns (Pawns.app) är en plattform som gör det möjligt för användare att tjäna passiv inkomst genom att dela sin oanvända internetbandbredd" +
+                        "Plattformen fungerar på ett peer-to-peer-nätverk där användarnas bandbredd används för olika ändamål, såsom webbdatainsamling och affärsintelligens" +
+                        "I utbyte kompenseras användarna baserat på mängden bandbredd de delar" +
+                        "GoPawns erbjuder ett enkelt sätt för människor att tjäna pengar på sin internetanslutning utan mycket ansträngning." },
+
+                        new ContentBlock { Type = "description", Content = "Hur det fungerar" },
+                        new ContentBlock { Type = "description", Content = "För att komma igång med GoPawns, behöver användare ladda ner och installera appen på sina enheter" +
+                        "När appen är inställd, körs den i bakgrunden och delar automatiskt användarens oanvända internetbandbredd med nätverket" +
+                        "Mängden bandbredd som delas är helt upp till användaren, och de kan övervaka och kontrollera det genom appen" +
+                        "Ju mer bandbredd som delas, desto mer pengar kan användaren tjäna" +
+                        "Betalningar görs baserat på mängden delad data, vanligtvis beräknad i gigabyte." },
+
+                        new ContentBlock { Type = "description", Content = "Intäkter och betalningar" },
+                        new ContentBlock { Type = "description", Content = "Användare av GoPawns tjänar pengar baserat på volymen av bandbredd de bidrar med till nätverket" +
+                        "Appen spårar dataanvändningen och beräknar intäkterna därefter" +
+                        "GoPawns tillhandahåller ett transparent intäktssystem där användare kan se exakt hur mycket de tjänar i realtid" +
+                        "Betalningar görs vanligtvis i kontanter, och användare kan ta ut sina intäkter via populära betalningsmetoder som PayPal, eller i vissa fall kryptovalutor" +
+                        "Plattformen är särskilt attraktiv för dem som söker en passiv inkomstström, eftersom det kräver lite till ingen pågående ansträngning när den väl är inställd." },
+
+                        new ContentBlock { Type = "description", Content = "Slutsats" },
+                        new ContentBlock { Type = "description", Content = "GoPawns (Pawns.app) erbjuder ett innovativt sätt att tjäna pengar på oanvänd internetbandbredd" +
+                        "Genom att helt enkelt köra appen i bakgrunden, kan användare generera en stadig passiv inkomst" +
+                        "Plattformen är säker, lätt att använda och tillhandahåller ett transparent betalningssystem" +
+                        "Oavsett om du letar efter att tjäna extra pengar med minimal ansträngning eller vill utnyttja din internetanslutning maximalt, erbjuder GoPawns en värdefull möjlighet" +
+                        "Med sitt fokus på säkerhet och användarkontroll har det blivit ett populärt val för dem som söker passiv inkomst online." },
+                        new ContentBlock { Type = "image", Content = "/images/pawnsoffer.png" }
+                    }
+                }
             }
         }
-        // Lägg till fler grupper och länkar här
     };
 
-    private void GoToTwitter()
+    private void ToggleLinkVisibility(LinkItem link)
     {
-        NavigationManager.NavigateTo("https://x.com/ShattapT28261", true);
+        link.IsVisible = !link.IsVisible;
     }
 
     [Inject]
     private NavigationManager NavigationManager { get; set; }
-
-    public class LinkItem
-    {
-        public string Name { get; set; }
-        public string Url { get; set; }
-    }
-
-    public class LinkGroup
-    {
-        public string Header { get; set; }
-        public List<LinkItem> Links { get; set; }
-    }
 }
