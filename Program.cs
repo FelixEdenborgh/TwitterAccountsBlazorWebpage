@@ -9,6 +9,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddHttpClient<RssFeedService>();
 builder.Services.AddHttpClient<TwitterRSSFeedService>();
+builder.Services.AddSingleton<RiksArticlesRssFeedService>();
+
+
 
 // Lägg till Application Insights
 builder.Services.AddApplicationInsightsTelemetry();
