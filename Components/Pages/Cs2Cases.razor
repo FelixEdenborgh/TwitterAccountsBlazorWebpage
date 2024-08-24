@@ -2,51 +2,64 @@
 
 @using Microsoft.AspNetCore.Components
 @using TwitterAccountsBlazorWebpage.Models
+@using TwitterAccountsBlazorWebpage.Rss_Feed_Import
 @inject NavigationManager Navigation
+@inject ArticlesRssFeedService RssFeedService
 @rendermode InteractiveServer
 
-<h3>Cs2 Cases</h3>
+<h3>CS2 Cases</h3>
 
 <div class="container cs2cases-background">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" style="position: sticky; top: 0;">
             <Cs2Cases_TwitterFeed />
         </div>
         <div class="col-md-8">
             <div class="link-list mt-3">
-                @foreach (var group in linkGroups)
+                @foreach (var item in mixedItems)
                 {
-                    <div>
-                        <div class="link-group-header p-2 mb-3">
-                            <h4>@group.Header</h4>
-                        </div>
-                        @foreach (var link in group.Links)
-                        {
-                            <div class="link-item-box mb-3">
-                                <div class="link-item-header p-3" @onclick="() => ToggleLinkVisibility(link)">
-                                    <h5>@link.Name</h5>
-                                </div>
-                                @if (link.IsVisible)
+                    if (item is FeedItem article)
+                    {
+                        <!-- Display Article -->
+                        <div class="article-box mb-4">
+                            <h5>@article.Title</h5>
+                            <div class="article-media">
+                                @if (!string.IsNullOrEmpty(article.MediaUrl))
                                 {
-                                    <div class="link-group-box mt-2">
-                                        @foreach (var block in link.ContentBlocks)
-                                        {
-                                            @if (block.Type == "image")
-                                            {
-                                                <img src="@block.Content" alt="@link.Name" class="img-fluid mb-2" />
-                                            }
-                                            else if (block.Type == "description")
-                                            {
-                                                <p>@block.Content</p>
-                                            }
-                                        }
-
-                                        <a href="@link.Url" target="_blank" class="btn btn-primary">Click Here to Find Out More</a>
-                                    </div>
+                                    <img src="@article.MediaUrl" alt="@article.Title" class="img-fluid mb-2" />
                                 }
                             </div>
-                        }
-                    </div>
+                            <div class="article-content">
+                                <p>@(new MarkupString(article.Summary))</p>
+                            </div>
+                            <div class="article-link">
+                                <a href="@article.Link" target="_blank" class="btn btn-primary">Click Here to Read More</a>
+                            </div>
+                        </div>
+                    }
+                    else if (item is LinkItem link)
+                    {
+                        <!-- Display Link Item -->
+                        <div class="link-item-box mb-3">
+                            <div class="link-item-header p-3">
+                                <h5>@link.Name</h5>
+                            </div>
+                            <div class="link-group-box mt-2">
+                                @foreach (var block in link.ContentBlocks)
+                                {
+                                    @if (block.Type == "image")
+                                    {
+                                        <img src="@block.Content" alt="@link.Name" class="img-fluid mb-2" />
+                                    }
+                                    else if (block.Type == "description")
+                                    {
+                                        <p>@block.Content</p>
+                                    }
+                                }
+                                <a href="@link.Url" target="_blank" class="btn btn-primary">Click Here to Find Out More</a>
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>
@@ -54,6 +67,9 @@
 </div>
 
 @code {
+    private List<object> mixedItems = new();  // Mixed list of articles, videos, and link items
+    private string rssFeedUrl = "https://rss.app/feeds/PIxHWiYiX1zU7RlK.xml"; // Anpassa till rätt RSS-feed
+
     private List<LinkGroup> linkGroups = new List<LinkGroup>
     {
         new LinkGroup
@@ -190,7 +206,7 @@
                         "Freecash.com offers multiple payout options, including PayPal, cryptocurrencies, and gift cards to popular retailers" +
                         "The minimum payout threshold is relatively low, allowing you to withdraw your earnings frequently if desired" +
                         "The process is straightforward, and most users receive their payouts quickly, making it easy to turn your online efforts into real money."}
-                        
+
                     }
                 }
             }
@@ -232,7 +248,7 @@
                         new ContentBlock { Type = "image", Content = "/images/dmarketdeposit.png" },
                         new ContentBlock { Type = "description", Content = "One of DMarket’s standout features is its instant cashout capability" +
                         "Users can withdraw their earnings through various payment methods, including PayPal, credit cards, and cryptocurrencies" +
-                        "This flexibility ensures that users can access their funds quickly and conveniently." }  
+                        "This flexibility ensures that users can access their funds quickly and conveniently." }
                     }
                 },
                 new LinkItem
@@ -246,7 +262,7 @@
                         new ContentBlock { Type = "description", Content = "Skinport.com is recognized as the largest trading platform for in-game items, particularly focusing on high-demand skins from popular games like CS, Dota 2, and Rust" +
                         "As the largest platform of its kind, Skinport boasts an extensive inventory of items, offering a vast selection for buyers and sellers alike" +
                         "This scale makes it the go-to destination for gamers looking to trade their virtual items in a secure and efficient environment." },
-                        
+
                         new ContentBlock { Type = "description", Content = "With thousands of transactions taking place daily" },
                         new ContentBlock { Type = "image", Content = "/images/skinportmarketplace.png" },
                         new ContentBlock { Type = "description", Content = "With thousands of transactions taking place daily, Skinport has established itself as the premier marketplace in the gaming community" +
@@ -322,7 +338,7 @@
                         "The best way to truly appreciate what the site has to offer is to come and try it out yourself" +
                         "Experience the thrill of betting your skins, engage with a vibrant community, and see firsthand why CSGORoll is a top choice for players around the world" +
                         "Don't miss out on the chance to win big and enhance your CSinventory—sign up today and start your journey on CSGORoll." }
-                        
+
                     }
                 },
                 new LinkItem
@@ -366,7 +382,7 @@
                         new ContentBlock { Type = "description", Content = "Farmskins.com is a popular online platform where users can open virtual cases to win CSskins" +
                         "The site operates similarly to the case-opening system in Counter-Strike: Global Offensive (CS) but offers a broader variety of cases with different themes and potential rewards" +
                         "Farmskins is part of the larger CSskin trading and gambling community, providing players with a chance to obtain rare and valuable in-game items." },
-                        
+
                         new ContentBlock { Type = "description", Content = "Case Opening" },
                         new ContentBlock { Type = "description", Content = "One of the main features of Farmskins is its extensive case-opening system" +
                         "The platform offers a wide range of cases that users can purchase and open, each with different potential rewards" +
@@ -465,7 +481,7 @@
                         new ContentBlock { Type = "description", Content = "One of the standout features of CSGOHug is its Daily Bonuses, including the opportunity to open free cases every day" +
                         "This daily reward system encourages regular participation on the platform and gives users the chance to win skins without spending any money" +
                         "By simply logging in each day, players can take advantage of these bonuses and potentially add valuable items to their CSinventory." },
-                        
+
                         new ContentBlock { Type = "description", Content = "Conclusion" },
                         new ContentBlock { Type = "description", Content = "CSGOHug.com is a dynamic platform in the CScommunity, offering players a fun and engaging way to win valuable in-game items" +
                         "With a wide selection of cases, daily free rewards, a transparent and fair system, and regular promotions, CSGOHug appeals to both casual players and serious collectors" +
@@ -511,12 +527,25 @@
         // Add more LinkGroups and LinkItems here...
     };
 
-    private void ToggleLinkVisibility(LinkItem link)
+    private List<FeedItem> articles = new();
+    private List<FeedItem> videos = new();
+
+    protected override void OnInitialized()
     {
-        link.IsVisible = !link.IsVisible;
+        var feedItems = RssFeedService.GetFeedItems(rssFeedUrl);
+        articles = RssFeedService.GetArticles(feedItems);
+        videos = RssFeedService.GetVideos(feedItems);
+
+        // Collect all link items
+        var linkItems = linkGroups.SelectMany(g => g.Links).ToList();
+
+        // Combine articles, videos, and link items into one list
+        mixedItems.AddRange(articles);
+        mixedItems.AddRange(videos);
+        mixedItems.AddRange(linkItems);
+
+        // Shuffle the combined list randomly
+        Random rng = new Random();
+        mixedItems = mixedItems.OrderBy(item => rng.Next()).ToList();
     }
-
-    [Inject]
-    private NavigationManager NavigationManager { get; set; }
-
 }
