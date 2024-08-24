@@ -19,9 +19,9 @@
     {
         @foreach (var tweet in tweets)
         {
-            <div class="tweet">
+            <div class="tweet mb-3">
                 <div class="tweet-content">
-                    <div>@((MarkupString)tweet.Summary.Text)</div> <!-- Rendera tweet-innehållet som HTML -->
+                    <div>@((MarkupString)tweet.Summary.Text)</div> <!-- Render tweet content as HTML -->
                     <small>@tweet.PublishDate.ToString("g")</small>
                     @if (links.ContainsKey(tweet.Id) && links[tweet.Id].Any())
                     {
@@ -30,7 +30,7 @@
                             {
                                 @if (link.Contains("youtube.com"))
                                 {
-                                    <iframe width="560" height="315" src="@link" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <iframe width="100%" height="315" src="@link" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 }
                                 else if (link.EndsWith(".mp4") || link.EndsWith(".webm") || link.EndsWith(".ogg"))
                                 {
@@ -54,7 +54,7 @@
     protected override async Task OnInitializedAsync()
     {
         Logger.LogInformation("Initializing SwedishMedia_TwitterFeed component");
-        var feedUrl = "https://rss.app/feeds/VhpP8n4zPbzJYWVc.xml"; // Ersätt med ditt Twitter-handle
+        var feedUrl = "https://rss.app/feeds/VhpP8n4zPbzJYWVc.xml"; // Replace with your Twitter feed URL
         tweets = await FeedService.GetLatestTweetsAsync(feedUrl);
 
         foreach (var tweet in tweets)

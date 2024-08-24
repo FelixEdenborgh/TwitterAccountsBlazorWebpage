@@ -9,7 +9,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddHttpClient<RssFeedService>();
 builder.Services.AddHttpClient<TwitterRSSFeedService>();
-builder.Services.AddSingleton<RiksArticlesRssFeedService>();
+builder.Services.AddSingleton<ArticlesRssFeedService>();
 
 
 

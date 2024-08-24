@@ -55,6 +55,13 @@ html, body {
     min-height: 100vh;
 }
 
+.twitter-feed-container {
+    max-height: 80vh; /* Adjust this value to set the maximum height */
+    overflow-y: auto;
+    padding-right: 15px; /* Optional: Adds padding to avoid overlap with the scrollbar */
+}
+
+
 /* Länkar och knappar */
 a, .btn-link {
     color: #006bb7;
@@ -416,7 +423,8 @@ h1:focus {
 
 /* Tweet list styling */
 .tweet-list {
-    margin-top: 20px;
+    max-height: 100%; /* Allow the tweet list to grow as large as needed */
+    overflow-y: hidden; /* Disable the scroll bar */
 }
 
 .tweet {
@@ -425,6 +433,11 @@ h1:focus {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.tweet:last-child {
+    border-bottom: none;
 }
 
 .tweet-content {

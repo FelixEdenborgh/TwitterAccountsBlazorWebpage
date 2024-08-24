@@ -7,7 +7,7 @@ using TwitterAccountsBlazorWebpage.Models;
 
 namespace TwitterAccountsBlazorWebpage.Rss_Feed_Import
 {
-    public class RiksArticlesRssFeedService
+    public class ArticlesRssFeedService
     {
         public List<FeedItem> GetFeedItems(string rssFeedUrl)
         {
