@@ -1,4 +1,4 @@
-﻿@page "/globalnews"
+﻿@* @page "/globalnews"
 
 @using Microsoft.AspNetCore.Components
 @using TwitterAccountsBlazorWebpage.Models
@@ -11,55 +11,44 @@
 
 <div class="container globalnews-background">
     <div class="row">
-        <div class="col-md-4" style="position: sticky; top: 0;">
+        <div class="col-md-4">
             <GlobalNews_TwitterFeed />
         </div>
         <div class="col-md-8">
             <div class="link-list mt-3">
-                @foreach (var item in mixedItems)
+                @foreach (var group in linkGroups)
                 {
-                    if (item is FeedItem article)
-                    {
-                        <!-- Display Article -->
-                        <div class="article-box mb-4">
-                            <h5>@article.Title</h5>
-                            <div class="article-media">
-                                @if (!string.IsNullOrEmpty(article.MediaUrl))
+                    <div>
+                        <div class="link-group-header p-2 mb-3">
+                            <h4>@group.Header</h4>
+                        </div>
+                        @foreach (var link in group.Links)
+                        {
+                            <div class="link-item-box mb-3">
+                                <div class="link-item-header p-3" @onclick="() => ToggleLinkVisibility(link)">
+                                    <h5>@link.Name</h5>
+                                </div>
+                                @if (link.IsVisible)
                                 {
-                                    <img src="@article.MediaUrl" alt="@article.Title" class="img-fluid mb-2" />
+                                    <div class="link-group-box mt-2">
+                                        @foreach (var block in link.ContentBlocks)
+                                        {
+                                            @if (block.Type == "image")
+                                            {
+                                                <img src="@block.Content" alt="@link.Name" class="img-fluid mb-2" />
+                                            }
+                                            else if (block.Type == "description")
+                                            {
+                                                <p>@block.Content</p>
+                                            }
+                                        }
+
+                                        <a href="@link.Url" target="_blank" class="btn btn-primary">Click Here to Find Out More</a>
+                                    </div>
                                 }
                             </div>
-                            <div class="article-content">
-                                <p>@(new MarkupString(article.Summary))</p>
-                            </div>
-                            <div class="article-link">
-                                <a href="@article.Link" target="_blank" class="btn btn-primary">Click Here to Read More</a>
-                            </div>
-                        </div>
-                    }
-                    else if (item is LinkItem link)
-                    {
-                        <!-- Display Link Item -->
-                        <div class="link-item-box mb-3">
-                            <div class="link-item-header p-3">
-                                <h5>@link.Name</h5>
-                            </div>
-                            <div class="link-group-box mt-2">
-                                @foreach (var block in link.ContentBlocks)
-                                {
-                                    @if (block.Type == "image")
-                                    {
-                                        <img src="@block.Content" alt="@link.Name" class="img-fluid mb-2" />
-                                    }
-                                    else if (block.Type == "description")
-                                    {
-                                        <p>@block.Content</p>
-                                    }
-                                }
-                                <a href="@link.Url" target="_blank" class="btn btn-primary">Click Here to Find Out More</a>
-                            </div>
-                        </div>
-                    }
+                        }
+                    </div>
                 }
             </div>
         </div>
@@ -67,9 +56,6 @@
 </div>
 
 @code {
-    private List<object> mixedItems = new();  // Mixed list of articles, videos, and link items
-    private string rssFeedUrl = "https://rss.app/feeds/bEKmytFzulOLq192.xml";
-
     private List<LinkGroup> linkGroups = new List<LinkGroup>
     {
         new LinkGroup
@@ -259,25 +245,12 @@
         }
     };
 
-    private List<FeedItem> articles = new();
-    private List<FeedItem> videos = new();
-
-    protected override void OnInitialized()
+    private void ToggleLinkVisibility(LinkItem link)
     {
-        var feedItems = RssFeedService.GetFeedItems(rssFeedUrl);
-        articles = RssFeedService.GetArticles(feedItems);
-        videos = RssFeedService.GetVideos(feedItems);
-
-        // Collect all link items
-        var linkItems = linkGroups.SelectMany(g => g.Links).ToList();
-
-        // Combine articles, videos, and link items into one list
-        mixedItems.AddRange(articles);
-        mixedItems.AddRange(videos);
-        mixedItems.AddRange(linkItems);
-
-        // Shuffle the combined list randomly
-        Random rng = new Random();
-        mixedItems = mixedItems.OrderBy(item => rng.Next()).ToList();
+        link.IsVisible = !link.IsVisible;
     }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
 }
+ *@
