@@ -10,9 +10,7 @@
 
 <div class="container swedish-media-background">
     <div class="row">
-        <div class="col-md-4" style="position: sticky; top: 0;">
-            <SwedishMedia_TwitterFeed />
-        </div>
+        <!-- Artiklarna till vänster -->
         <div class="col-md-8">
             <div class="link-list mt-3">
                 @foreach (var item in mixedItems)
@@ -36,31 +34,13 @@
                             </div>
                         </div>
                     }
-                    else if (item is LinkItem link)
-                    {
-                        <!-- Display Link Item -->
-                        <div class="link-item-box mb-3">
-                            <div class="link-item-header p-3">
-                                <h5>@link.Name</h5>
-                            </div>
-                            <div class="link-group-box mt-2">
-                                @foreach (var block in link.ContentBlocks)
-                                {
-                                    @if (block.Type == "image")
-                                    {
-                                        <img src="@block.Content" alt="@link.Name" class="img-fluid mb-2" />
-                                    }
-                                    else if (block.Type == "description")
-                                    {
-                                        <p>@block.Content</p>
-                                    }
-                                }
-                                <a href="@link.Url" target="_blank" class="btn btn-primary">Klicka här för att få veta mer</a>
-                            </div>
-                        </div>
-                    }
                 }
             </div>
+        </div>
+
+        <!-- Twitter-feed till höger -->
+        <div class="col-md-4" style="position: sticky; top: 0;">
+            <SwedishMedia_TwitterFeed />
         </div>
     </div>
 </div>

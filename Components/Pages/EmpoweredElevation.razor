@@ -11,9 +11,7 @@
 
 <div class="container empowered-elevation-background">
     <div class="row">
-        <div class="col-md-4" style="position: sticky; top: 0;">
-            <EmpoweredElevation_TwitterFeed />
-        </div>
+        <!-- Artiklarna till vänster -->
         <div class="col-md-8">
             <div class="link-list mt-3">
                 @foreach (var item in mixedItems)
@@ -63,8 +61,14 @@
                 }
             </div>
         </div>
+
+        <!-- Twitter-feed till höger -->
+        <div class="col-md-4" style="position: sticky; top: 0;">
+            <EmpoweredElevation_TwitterFeed />
+        </div>
     </div>
 </div>
+
 
 @code {
     private List<object> mixedItems = new();  // Mixed list of articles, videos, and link items
