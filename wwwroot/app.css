@@ -11,46 +11,53 @@ html, body {
     background-attachment: fixed;
 }
 
+/* Grundläggande stil för innehållsboxen */
+.content-box {
+    background-color: #f0f0f0; /* Färg för innerboxen */
+    padding: 20px;
+    margin: 20px auto; /* Centrerar boxen med marginaler */
+    max-width: 1200px; /* Sätter maxbredd för boxen */
+    border-radius: 8px; /* Rundar hörnen */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Lägg till en skugga för djup */
+    min-height: 100vh; /* Boxen fyller hela sidan vertikalt */
+}
+
 /* Specifik bakgrundsbild för Swedish Media-sidan */
 .swedish-media-background {
-    /*background-image: url('/images/sweden.jpg');*/ /* Ändra till sökvägen till din bakgrundsbild */
+    background-image: url('/images/sweden.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    background-color: #f0f0f0;
     padding: 20px;
     min-height: 100vh;
 }
 
 /* Specifik bakgrundsbild för Global news-sidan */
 .globalnews-background {
-    /*background-image: url('/images/earth2.jpg');*/ /* Ändra till sökvägen till din bakgrundsbild */
+    background-image: url('/images/earth2.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    background-color: #f0f0f0;
     padding: 20px;
     min-height: 100vh;
 }
 
 /* Specifik bakgrundsbild för Cs2-sidan */
 .cs2cases-background {
-    /*background-image: url('/images/cs2.jpg');*/ /* Ändra till sökvägen till din bakgrundsbild */
+    background-image: url('/images/cs2.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    background-color: #f0f0f0;
     padding: 20px;
     min-height: 100vh;
 }
 
 /* Specifik bakgrundsbild för Empowered Elevation-sidan */
 .empowered-elevation-background {
-    /*background-image: url('/images/Motivational.jpg');*/ /* Ändra till sökvägen till din bakgrundsbild */
+    background-image: url('/images/Motivational.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    background-color: #f0f0f0;
     padding: 20px;
     min-height: 100vh;
 }

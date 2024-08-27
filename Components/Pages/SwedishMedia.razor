@@ -9,38 +9,40 @@
 <h3>Swedish Media</h3>
 
 <div class="container swedish-media-background">
-    <div class="row">
-        <!-- Artiklarna till vänster -->
-        <div class="col-md-8">
-            <div class="link-list mt-3">
-                @foreach (var item in mixedItems)
-                {
-                    if (item is FeedItem article)
+    <div class="content-box">
+        <div class="row">
+            <!-- Artiklarna till vänster -->
+            <div class="col-md-8">
+                <div class="link-list mt-3">
+                    @foreach (var item in mixedItems)
                     {
-                        <!-- Display Article -->
-                        <div class="article-box mb-4">
-                            <h5>@article.Title</h5>
-                            <div class="article-media">
-                                @if (!string.IsNullOrEmpty(article.MediaUrl))
-                                {
-                                    <img src="@article.MediaUrl" alt="@article.Title" class="img-fluid mb-2" />
-                                }
+                        if (item is FeedItem article)
+                        {
+                            <!-- Display Article -->
+                            <div class="article-box mb-4">
+                                <h5>@article.Title</h5>
+                                <div class="article-media">
+                                    @if (!string.IsNullOrEmpty(article.MediaUrl))
+                                    {
+                                        <img src="@article.MediaUrl" alt="@article.Title" class="img-fluid mb-2" />
+                                    }
+                                </div>
+                                <div class="article-content">
+                                    <p>@(new MarkupString(article.Summary))</p>
+                                </div>
+                                <div class="article-link">
+                                    <a href="@article.Link" target="_blank" class="btn btn-primary">Läs mer...</a>
+                                </div>
                             </div>
-                            <div class="article-content">
-                                <p>@(new MarkupString(article.Summary))</p>
-                            </div>
-                            <div class="article-link">
-                                <a href="@article.Link" target="_blank" class="btn btn-primary">Läs mer...</a>
-                            </div>
-                        </div>
+                        }
                     }
-                }
+                </div>
             </div>
-        </div>
 
-        <!-- Twitter-feed till höger -->
-        <div class="col-md-4" style="position: sticky; top: 0;">
-            <SwedishMedia_TwitterFeed />
+            <!-- Twitter-feed till höger -->
+            <div class="col-md-4" style="position: sticky; top: 0;">
+                <SwedishMedia_TwitterFeed />
+            </div>
         </div>
     </div>
 </div>
