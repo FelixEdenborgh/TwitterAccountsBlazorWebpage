@@ -22,7 +22,7 @@ namespace TwitterAccountsBlazorWebpage.Rss_Feed_Import
         }
 
         // Get tweets, count is how many you should get
-        public async Task<List<SyndicationItem>> GetLatestTweetsAsync(string feedUrl, int count = 20)
+        public async Task<List<SyndicationItem>> GetLatestTweetsAsync(string feedUrl, int count = 50)
         {
             try
             {
