@@ -74,7 +74,15 @@
 
 @code {
     private List<object> mixedItems = new();  // Mixed list of articles, videos, and link items
-    private string rssFeedUrl = "https://rss.app/feeds/bEKmytFzulOLq192.xml";
+
+    // Lägger till en lista med flera RSS-flöden
+    private List<string> rssFeedUrls = new List<string>
+    {
+        "https://rss.app/feeds/bEKmytFzulOLq192.xml",
+        "https://rss.app/feeds/SmMD6u5uTMy7vZ0f.xml", // Lägg till fler RSS-flöden här
+        "https://rss.app/feeds/UYRWVgfG5EZ4f5zK.xml",
+        "https://rss.app/feeds/GUryqG2Wo6QXJZwy.xml"
+    };
 
     private List<LinkGroup> linkGroups = new List<LinkGroup>
     {
@@ -270,19 +278,32 @@
 
     protected override void OnInitialized()
     {
-        var feedItems = RssFeedService.GetFeedItems(rssFeedUrl);
-        articles = RssFeedService.GetArticles(feedItems);
-        videos = RssFeedService.GetVideos(feedItems);
+        // Loopar genom alla RSS-flöden och hämtar artiklar och videor från varje
+        foreach (var rssFeedUrl in rssFeedUrls)
+        {
+            var feedItems = RssFeedService.GetFeedItems(rssFeedUrl);
 
-        // Collect all link items
+            // Kolla om feedItems inte är null innan bearbetning
+            if (feedItems != null && feedItems.Any())
+            {
+                articles.AddRange(RssFeedService.GetArticles(feedItems) ?? new List<FeedItem>());
+                videos.AddRange(RssFeedService.GetVideos(feedItems) ?? new List<FeedItem>());
+            }
+            else
+            {
+                Console.WriteLine($"No items found for RSS feed: {rssFeedUrl}");
+            }
+        }
+
+        // Samla alla länkobjekt
         var linkItems = linkGroups.SelectMany(g => g.Links).ToList();
 
-        // Combine articles, videos, and link items into one list
+        // Kombinera artiklar, videor och länkar till en lista
         mixedItems.AddRange(articles);
         mixedItems.AddRange(videos);
         mixedItems.AddRange(linkItems);
 
-        // Shuffle the combined list randomly
+        // Blanda listan slumpmässigt
         Random rng = new Random();
         mixedItems = mixedItems.OrderBy(item => rng.Next()).ToList();
     }

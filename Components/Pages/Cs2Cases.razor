@@ -74,10 +74,17 @@
 
 @code {
     private List<object> mixedItems = new();  // Mixed list of articles, videos, and link items
-    private string rssFeedUrl = "https://rss.app/feeds/YrD6bgbhDj1TCGhm.xml"; // Anpassa till rätt RSS-feed
+
+    // Lägger till en lista med flera RSS-flöden
+    private List<string> rssFeedUrls = new List<string>
+    {
+        "https://rss.app/feeds/YrD6bgbhDj1TCGhm.xml", // RSS feed 1
+        "https://rss.app/feeds/PIxHWiYiX1zU7RlK.xml" // RSS feed 2, lägg till fler här
+    };
 
     private List<LinkGroup> linkGroups = new List<LinkGroup>
     {
+        // Lägg till dina LinkGroups här...
         new LinkGroup
         {
             Header = "Make money from home",
@@ -529,8 +536,6 @@
                 }
             }
         }
-
-        // Add more LinkGroups and LinkItems here...
     };
 
     private List<FeedItem> articles = new();
@@ -538,20 +543,25 @@
 
     protected override void OnInitialized()
     {
-        var feedItems = RssFeedService.GetFeedItems(rssFeedUrl);
-        articles = RssFeedService.GetArticles(feedItems);
-        videos = RssFeedService.GetVideos(feedItems);
+        // Loopar genom alla RSS-flöden och hämtar artiklar och videor från varje
+        foreach (var url in rssFeedUrls)
+        {
+            var feedItems = RssFeedService.GetFeedItems(url);
+            articles.AddRange(RssFeedService.GetArticles(feedItems));
+            videos.AddRange(RssFeedService.GetVideos(feedItems));
+        }
 
-        // Collect all link items
+        // Samla alla link items
         var linkItems = linkGroups.SelectMany(g => g.Links).ToList();
 
-        // Combine articles, videos, and link items into one list
+        // Kombinera artiklar, videor och link items till en lista
         mixedItems.AddRange(articles);
         mixedItems.AddRange(videos);
         mixedItems.AddRange(linkItems);
 
-        // Shuffle the combined list randomly
+        // Blanda listan slumpmässigt
         Random rng = new Random();
         mixedItems = mixedItems.OrderBy(item => rng.Next()).ToList();
     }
 }
+
